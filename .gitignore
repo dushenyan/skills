@@ -1,0 +1,26 @@
+# 依赖
+node_modules/
+
+# 日志
+*.log
+logs/
+pnpm-debug.log*
+
+# 构建与缓存产物
+dist/
+.cache/
+*.tsbuildinfo
+
+# 测试覆盖率
+coverage/
+
+# 系统与编辑器
+.DS_Store
+.idea/
+.vscode/
+
+# 本地 AI 编辑器配置（技能装到全局目录，仓库内不需要提交）
+.codebuddy/
+.codebuddycn/
+.trae/
+.trae-cn/
