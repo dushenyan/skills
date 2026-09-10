@@ -64,6 +64,8 @@ def example_function(param1: str, param2: int) -> bool:
 
 为什么坚持 Google 风格：初学者读 docstring 就是在读"这个函数怎么用"。Args / Returns / Example 三段固定位置，比散文式注释好扫得多。
 
+某个概念实在没法用真实代码说清时，允许用伪代码，但必须在代码块首行标注 `# 伪代码`，并用文字把意图讲明白。
+
 ## 四、表格
 
 - 对比类信息一律用表格，表头加粗。

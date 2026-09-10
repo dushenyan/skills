@@ -6,12 +6,13 @@
 
 检查分两组：
 
-1. 教程机械项：禁用写法、分割线、章末指引、配图覆盖、代码块语言标注、文件名。
-2. 阮一峰《中文技术文档的写作规范》机械项：标点、字间距、长句、标题层级、
-   被动语态等；规则与出处见 references/narrative-style.md 第五节。
+1. 教程硬性机械项：分割线、章末指引、配图覆盖、代码块语言标注、文件名与序号。
+2. 文字规范提示：标点、字间距、长句、标题层级、被动语态、容易出戏的腔调等。
 
-风格是否到位、类比是否贴切、指代是否明确、的/地/得是否用对，脚本判定不了，
-仍须人工对照 references/narrative-style.md 第五节的核对表过一遍。
+第 2 组以提醒为目的，多数规则是 WARN 级；只有明确违反中文标点与标题层级的
+部分才记 ERROR。语气是否自然、类比是否贴切、指代是否明确、的/地/得是否用对，
+脚本判定不了，也不需要为它们反复改稿，写的时候顺手留意即可
+（参考 references/narrative-style.md）。
 
 退出码：有 ERROR 时为 1，否则为 0。
 """
@@ -26,7 +27,7 @@ from pathlib import Path
 CJK = r"\u4e00-\u9fff"
 CJK_RE = re.compile(f"[{CJK}]")
 
-# 禁用写法清单（见 references/narrative-style.md 第二节）
+# 容易出戏的腔调（见 references/narrative-style.md 第二节），只报 WARN，不阻断交付
 BANNED = [
     "综上所述", "由此可见", "总而言之", "本文将详细介绍",
     "作为一个", "所谓",
@@ -61,9 +62,9 @@ NORM_RULES: dict[str, tuple[str, str]] = {
     "括号内句号": ("error", "标点·句号"),
     "标题末尾点号": ("error", "标点·原则"),
     "标题跳级": ("error", "标题·原则"),
-    "英数字与全角标点间空格": ("error", "文本·字间距"),
-    "句子过长": ("error", "文本·句子"),
-    # ---- WARN：建议改 ----
+    # ---- WARN：提示为主，不阻断交付 ----
+    "英数字与全角标点间空格": ("warn", "文本·字间距"),
+    "句子过长": ("warn", "文本·句子"),
     "中英之间缺空格": ("warn", "文本·字间距"),
     "数字间距不统一": ("warn", "文本·字间距"),
     "千分号": ("warn", "数值·千分号"),
@@ -373,10 +374,10 @@ def scan_file(path: Path, report: Report) -> dict:
         if "类比理解" in raw:
             stats["has_analogy"] = True
 
-        # 禁用写法
+        # 容易出戏的腔调（提示级，不必为此回扫全文）
         for word in BANNED:
             if word in raw:
-                report.error(rel, f"第 {i} 行：出现禁用写法「{word}」")
+                report.warn(rel, f"第 {i} 行：出现容易出戏的腔调「{word}」，建议换个说法")
 
         # 阮一峰规范的逐行机械项
         check_line_norms(rel, i, raw, report)
@@ -494,7 +495,7 @@ def print_norms(report: Report) -> None:
     if not report.norms:
         return
 
-    print("== 阮一峰《中文技术文档的写作规范》 ==")
+    print("== 文字规范提示（参考，不阻断交付） ==")
     for rule, (level, source) in NORM_RULES.items():
         hits = report.norms.get(rule)
         if not hits:
@@ -538,7 +539,8 @@ def main() -> int:
     print(f"检查文件：{len(paths)} 个（其中章节文件 {len(shown)} 个）")
     print(
         f"ERROR {len(report.errors)} 项，WARN {len(report.warnings)} 项，"
-        f"阮一峰规范 {norm_total} 处（{len(report.norms)} 类）\n",
+        f"文字规范提示 {norm_total} 处（{len(report.norms)} 类，"
+        f"其中 {len(report.norm_errors())} 类需修正）\n",
     )
 
     if report.errors:
@@ -557,8 +559,8 @@ def main() -> int:
     if not report.errors and not report.warnings and not report.norms:
         print("机械项全部通过。")
     if report.norms:
-        print("以上是能机械判定的部分；指代、的/地/得、类比是否贴切等仍需人工核对，")
-        print("见 references/narrative-style.md 第五节的核对表。")
+        print("以上只是提醒；语气是否自然、类比是否贴切，写的时候留意即可，")
+        print("不必为这些提示反复改稿。参考 references/narrative-style.md。")
 
     return 1 if report.errors or report.norm_errors() else 0
 
