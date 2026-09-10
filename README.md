@@ -9,7 +9,7 @@
 
 ### 一键安装到本地编辑器
 
-克隆本仓库后，一条命令即可把 `skills/` 下的技能补充到本地各 AI 编辑器的全局技能目录（自动检测 Claude Code、CodeBuddy、Trae 等）：
+克隆本仓库后，一条命令即可把 `skills/` 下的技能补充到本地各 AI 编辑器的全局技能目录（自动检测 Claude Code、CodeBuddy、Trae、TraeWork、Trae 插件、WorkBuddy 等）：
 
 ```bash
 pnpm install
@@ -22,11 +22,23 @@ pnpm skills
 
 | 参数 | 说明 |
 |------|------|
-| `--target=claude,codebuddy,trae-cn` | 只安装到指定编辑器 |
+| `--target=claude,workbuddy` | 只安装到指定编辑器 |
 | `--skill=cli,resume` | 只安装指定技能 |
 | `--copy` | 复制文件而不是创建软链接 |
 | `--uninstall` | 从各编辑器移除本仓库的技能 |
 | `--dry-run` | 只打印将要执行的操作 |
+
+支持的编辑器（配置目录存在即视为已安装）：
+
+| `--target` | 客户端 | 技能目录 |
+|------------|--------|----------|
+| `claude` | Claude Code | `~/.claude/skills` |
+| `codebuddy` | CodeBuddy | `~/.codebuddy/skills` |
+| `codebuddy-cn` | CodeBuddy CN | `~/.codebuddycn/skills` |
+| `trae` | Trae | `~/.trae/skills` |
+| `trae-cn`（别名 `traework-cn`） | Trae CN / TraeWork CN | `~/.trae-cn/skills` |
+| `trae-plugin`（别名 `marscode`） | Trae 插件（VS Code / JetBrains） | `~/.marscode/skills` |
+| `workbuddy` | WorkBuddy | `~/.workbuddy/skills` |
 
 脚本只会操作本仓库中存在的技能名，不会影响编辑器里的其他技能。
 
@@ -81,11 +93,3 @@ fork 这个项目来创建你自己的定制技能集合。
 4. 运行 `make skills` 把技能安装到本地编辑器验证效果
 
 请参阅 [AGENTS.md](AGENTS.md) 了解详细的编写指南。
-
-## 许可证
-
-技能和本存储库中的脚本采用 MIT 许可证。
-
-### 致谢
-
-- [antfu](https://github.com/antfu) 对开源做出的卓越贡献

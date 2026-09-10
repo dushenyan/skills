@@ -3,12 +3,12 @@
  * 一键把本仓库 `skills/` 下的技能安装到本地 AI 编辑器的全局技能目录。
  *
  * 用法：
- *   pnpm skills                        安装全部技能到所有已检测到的编辑器（软链接）
- *   pnpm skills --copy                 用文件复制代替软链接
- *   pnpm skills --target=claude,trae-cn  只安装到指定编辑器
- *   pnpm skills --skill=cli,resume     只安装指定技能
- *   pnpm skills --uninstall            从各编辑器移除本仓库的技能
- *   pnpm skills --dry-run              只打印将要执行的操作，不落盘
+ *   pnpm skills                            安装全部技能到所有已检测到的编辑器（软链接）
+ *   pnpm skills --copy                     用文件复制代替软链接
+ *   pnpm skills --target=claude,workbuddy  只安装到指定编辑器
+ *   pnpm skills --skill=cli,resume         只安装指定技能
+ *   pnpm skills --uninstall                从各编辑器移除本仓库的技能
+ *   pnpm skills --dry-run                  只打印将要执行的操作，不落盘
  *
  * 说明：
  * - 编辑器通过其配置目录（如 `~/.claude`）是否存在来自动检测。
@@ -30,15 +30,34 @@ interface Editor {
   id: string
   label: string
   configDir: string
+  /** 可选别名，`--target` 时按产品名指定更顺手。 */
+  aliases?: string[]
 }
 
-/** 支持自动检测的编辑器：配置目录存在即视为已安装。 */
+/**
+ * 支持自动检测的编辑器：配置目录存在即视为已安装。
+ * `configDir` 取自各客户端自己的用户目录名（Electron 应用可从 product.json 的 dataFolderName 查到）。
+ */
 const EDITORS: Editor[] = [
   { id: 'claude', label: 'Claude Code', configDir: join(home, '.claude') },
   { id: 'codebuddy', label: 'CodeBuddy', configDir: join(home, '.codebuddy') },
   { id: 'codebuddy-cn', label: 'CodeBuddy CN', configDir: join(home, '.codebuddycn') },
   { id: 'trae', label: 'Trae', configDir: join(home, '.trae') },
-  { id: 'trae-cn', label: 'Trae CN', configDir: join(home, '.trae-cn') },
+  // Trae CN 与 TraeWork CN（TRAE SOLO 桌面版）的 dataFolderName 都是 .trae-cn，共用一套技能目录
+  {
+    id: 'trae-cn',
+    label: 'Trae CN / TraeWork CN',
+    configDir: join(home, '.trae-cn'),
+    aliases: ['traework-cn', 'traework'],
+  },
+  // VS Code / JetBrains 里的 Trae 插件（原 MarsCode）
+  {
+    id: 'trae-plugin',
+    label: 'Trae 插件（VS Code / JetBrains）',
+    configDir: join(home, '.marscode'),
+    aliases: ['marscode', 'trae-vscode'],
+  },
+  { id: 'workbuddy', label: 'WorkBuddy', configDir: join(home, '.workbuddy') },
 ]
 
 interface Options {
@@ -129,15 +148,20 @@ function pickEditors(targets: string[]): Editor[] {
   if (targets.length === 0)
     return EDITORS.filter(editor => existsSync(editor.configDir))
 
-  const map = new Map(EDITORS.map(editor => [editor.id, editor]))
+  const map = new Map<string, Editor>()
+  for (const editor of EDITORS) {
+    map.set(editor.id, editor)
+    for (const alias of editor.aliases ?? [])
+      map.set(alias, editor)
+  }
+
   const unknown = targets.filter(id => !map.has(id))
   if (unknown.length > 0)
     throw new Error(`未知编辑器: ${unknown.join(', ')}（可选: ${EDITORS.map(editor => editor.id).join(', ')}）`)
 
-  return targets.flatMap((id) => {
-    const editor = map.get(id)
-    return editor ? [editor] : []
-  })
+  // 别名可能指向同一个编辑器，去重后同一目录只安装一次
+  const picked = new Set(targets.map(id => map.get(id)).filter(Boolean) as Editor[])
+  return [...picked]
 }
 
 function ensureDir(path: string, dryRun: boolean): void {
@@ -157,7 +181,7 @@ function installSkills(options: Options): void {
   const editors = pickEditors(options.targets)
 
   if (editors.length === 0) {
-    logWarn('未检测到任何受支持的编辑器，可用 `--target=claude,codebuddy,trae-cn` 显式指定')
+    logWarn('未检测到任何受支持的编辑器，可用 `--target=claude,codebuddy,trae-cn,workbuddy` 显式指定')
     return
   }
 
@@ -220,6 +244,7 @@ function printHelp(): void {
 ${bold('选项')}
   --target=<ids>   只安装到指定编辑器，逗号分隔
                    可选: ${EDITORS.map(editor => editor.id).join(', ')}
+                   别名: ${EDITORS.flatMap(editor => editor.aliases ?? []).join(', ')}
   --skill=<names>  只安装指定技能，逗号分隔
   --copy           复制文件而不是创建软链接
   --uninstall, -u  从各编辑器移除本仓库的技能
@@ -229,6 +254,7 @@ ${bold('选项')}
 ${bold('示例')}
   pnpm skills
   pnpm skills --target=claude,codebuddy
+  pnpm skills --target=traework-cn,workbuddy
   pnpm skills --skill=cli,resume --copy
   pnpm skills --uninstall --target=trae-cn`)
 }
