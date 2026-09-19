@@ -3,7 +3,7 @@ name: runoob-tech-tutorial
 description: 根据技术名称生成菜鸟教程风格的中文技术教程：循序渐进、全链路覆盖、阮一峰式叙事、配套可运行的项目案例、每章末尾的「下一站建议」。当用户明确要一份某技术的教程或学习路径（如「生成一份 Milvus 教程」「写套 FastAPI 入门到进阶教程」「用菜鸟教程风格讲一遍 XX」）时调用。只讲解一个概念、答疑或写单段示例时不要调用。
 metadata:
   author: Shenyan Du
-  version: "2026.9.10"
+  version: "2026.9.18"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -50,7 +50,7 @@ metadata:
 python3 scripts/check_tutorial.py <教程目录>
 ```
 
-脚本只兜底机械项：标点、代码块语言、章末指引、配图覆盖、文件命名、序号连续。ERROR 改完即止；文字与语气类的提示扫一眼就好，**不要为它们回扫全文**。指代是否明确、「的/地/得」是否用对，写的时候顺手留意。
+脚本只兜底**协作必需的机械项**：文件命名与序号连续、代码块闭合（ERROR）；代码块语言标注、章末「下一站建议」只提醒（WARN）。ERROR 改完即止；WARN 扫一眼就好。标点、字间距、句长、语气等写作风格脚本一律不查，写的时候顺手留意即可。
 
 最后补 `README.md`（目录结构、依赖安装、项目运行方式）。
 

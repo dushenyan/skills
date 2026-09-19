@@ -7,7 +7,7 @@ ARGS ?=
 help:
 	@echo "可用命令："
 	@echo "  make install          - 安装依赖"
-	@echo "  make skills           - 把所有技能软链接到本地各编辑器"
+	@echo "  make skills           - 全量对齐：所有技能软链接到本地各编辑器，并清理已删除的残留"
 	@echo "  make skills-dry       - 预演安装，不落盘"
 	@echo "  make skills-copy      - 复制文件安装，不使用软链接"
 	@echo "  make skills-uninstall - 从各编辑器移除本仓库的技能"

@@ -3,7 +3,7 @@
  * 一键把本仓库 `skills/` 下的技能安装到本地 AI 编辑器的全局技能目录。
  *
  * 用法：
- *   pnpm skills                            安装全部技能到所有已检测到的编辑器（软链接）
+ *   pnpm skills                            全量对齐：所有技能装到所有已检测到的编辑器（软链接）
  *   pnpm skills --copy                     用文件复制代替软链接
  *   pnpm skills --target=claude,workbuddy  只安装到指定编辑器
  *   pnpm skills --skill=cli,resume         只安装指定技能
@@ -13,12 +13,15 @@
  * 说明：
  * - 编辑器通过其配置目录（如 `~/.claude`）是否存在来自动检测。
  * - 默认使用软链接，仓库里的技能改动会即时生效；`--copy` 则复制一份。
- * - 只会操作本仓库中存在的技能名，不会碰编辑器里的其他技能。
+ * - 不带 `--skill` / `--target` 时执行全量对齐：仓库里的每个技能都会装到每个已检测到的
+ *   编辑器，编辑器里指向本仓库但已从仓库删除的残留会被清理，保证各编辑器的技能集合一致。
+ * - 只会操作本仓库装出去的技能：指向仓库的软链接、内容一致的副本。编辑器里的同名技能
+ *   会被跳过并给出提示，需要 `--force` 才会覆盖或移除；其他技能更不会碰到。
  */
 
-import { cpSync, existsSync, lstatSync, mkdirSync, readdirSync, readlinkSync, rmSync, symlinkSync } from 'node:fs'
+import { cpSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, readlinkSync, rmSync, symlinkSync } from 'node:fs'
 import { homedir } from 'node:os'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, resolve, sep } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
@@ -35,11 +38,40 @@ interface Editor {
 }
 
 /**
- * 支持自动检测的编辑器：配置目录存在即视为已安装。
+ * 支持自动检测的编辑器：配置目录存在即视为已安装，技能目录统一为 `<配置目录>/skills`。
  * `configDir` 取自各客户端自己的用户目录名（Electron 应用可从 product.json 的 dataFolderName 查到）。
+ * 目录路径以 [vercel-labs/skills](https://github.com/vercel-labs/skills) 的支持列表为准；
+ * 需要新增客户端时在此追加一行即可。
  */
 const EDITORS: Editor[] = [
+  // Anthropic
   { id: 'claude', label: 'Claude Code', configDir: join(home, '.claude') },
+  // 厂商无关的共享目录，多个 CLI 共用一套技能
+  {
+    id: 'agents',
+    label: '通用目录（Cline / Zed / Warp / Kimi Code）',
+    configDir: join(home, '.agents'),
+    aliases: ['universal'],
+  },
+  { id: 'config-agents', label: '通用目录（Amp / Replit）', configDir: join(home, '.config', 'agents'), aliases: ['amp', 'replit'] },
+  // Qoder
+  { id: 'qoder', label: 'Qoder', configDir: join(home, '.qoder') },
+  { id: 'qoder-cn', label: 'Qoder CN', configDir: join(home, '.qoder-cn') },
+  // OpenAI / Google
+  { id: 'codex', label: 'Codex', configDir: join(home, '.codex') },
+  { id: 'gemini', label: 'Gemini CLI', configDir: join(home, '.gemini') },
+  { id: 'antigravity', label: 'Antigravity', configDir: join(home, '.gemini', 'antigravity') },
+  // Cursor 系
+  { id: 'cursor', label: 'Cursor', configDir: join(home, '.cursor') },
+  { id: 'windsurf', label: 'Windsurf', configDir: join(home, '.codeium', 'windsurf') },
+  // 其他常见 CLI
+  { id: 'copilot', label: 'GitHub Copilot CLI', configDir: join(home, '.copilot') },
+  { id: 'opencode', label: 'OpenCode', configDir: join(home, '.config', 'opencode') },
+  { id: 'qwen', label: 'Qwen Code', configDir: join(home, '.qwen') },
+  { id: 'iflow', label: 'iFlow CLI', configDir: join(home, '.iflow') },
+  { id: 'kilo', label: 'Kilo Code', configDir: join(home, '.kilo') },
+  { id: 'roo', label: 'Roo Code', configDir: join(home, '.roo') },
+  // 国内客户端
   { id: 'codebuddy', label: 'CodeBuddy', configDir: join(home, '.codebuddy') },
   { id: 'codebuddy-cn', label: 'CodeBuddy CN', configDir: join(home, '.codebuddycn') },
   { id: 'trae', label: 'Trae', configDir: join(home, '.trae') },
@@ -64,6 +96,7 @@ interface Options {
   dryRun: boolean
   copy: boolean
   uninstall: boolean
+  force: boolean
   help: boolean
   targets: string[]
   skills: string[]
@@ -87,13 +120,15 @@ function splitList(value: string): string[] {
 }
 
 function parseArgs(argv: string[]): Options {
-  const options: Options = { dryRun: false, copy: false, uninstall: false, help: false, targets: [], skills: [] }
+  const options: Options = { dryRun: false, copy: false, uninstall: false, force: false, help: false, targets: [], skills: [] }
 
   for (const arg of argv) {
     if (arg === '-n' || arg === '--dry-run')
       options.dryRun = true
     else if (arg === '--copy')
       options.copy = true
+    else if (arg === '-f' || arg === '--force')
+      options.force = true
     else if (arg === '-u' || arg === '--uninstall')
       options.uninstall = true
     else if (arg === '-h' || arg === '--help')
@@ -124,6 +159,29 @@ function isLinkedTo(dest: string, target: string): boolean {
     if (!lstatSync(dest).isSymbolicLink())
       return false
     return resolve(dirname(dest), readlinkSync(dest)) === target
+  }
+  catch {
+    return false
+  }
+}
+
+/** 是否是安装脚本留下的软链接（指向本仓库 skills/ 下的某个目录）。 */
+function pointsIntoRepo(dest: string): boolean {
+  try {
+    if (!lstatSync(dest).isSymbolicLink())
+      return false
+    const link = resolve(dirname(dest), readlinkSync(dest))
+    return link === skillsRoot || link.startsWith(`${skillsRoot}${sep}`)
+  }
+  catch {
+    return false
+  }
+}
+
+/** `--copy` 装出去的旧副本：内容一致时覆盖是无损的，可以安全替换。 */
+function isRepoCopy(dest: string, source: string): boolean {
+  try {
+    return readFileSync(join(dest, 'SKILL.md')).equals(readFileSync(join(source, 'SKILL.md')))
   }
   catch {
     return false
@@ -170,6 +228,25 @@ function ensureDir(path: string, dryRun: boolean): void {
   mkdirSync(path, { recursive: true })
 }
 
+/**
+ * 清理编辑器里指向本仓库、但仓库中已不存在的技能（含改名后的旧名）。
+ * 只删本仓库软链接，编辑器自带的其他技能原样保留。
+ */
+function removeOrphans(targetDir: string, keep: string[], dryRun: boolean): void {
+  if (!existsSync(targetDir))
+    return
+  for (const entry of readdirSync(targetDir)) {
+    if (keep.includes(entry))
+      continue
+    const dest = join(targetDir, entry)
+    if (!pointsIntoRepo(dest))
+      continue
+    if (!dryRun)
+      rmSync(dest, { recursive: true, force: true })
+    logOk(`清理 ${entry}（仓库中已不存在）`)
+  }
+}
+
 function installSkills(options: Options): void {
   const allSkills = listSkills()
   if (allSkills.length === 0) {
@@ -179,11 +256,16 @@ function installSkills(options: Options): void {
 
   const skills = options.skills.length > 0 ? pickSkills(allSkills, options.skills) : allSkills
   const editors = pickEditors(options.targets)
+  /** 未限定技能范围时才做全量对齐，避免 `--skill` 子集安装误删其他技能。 */
+  const fullSync = options.skills.length === 0
 
   if (editors.length === 0) {
-    logWarn('未检测到任何受支持的编辑器，可用 `--target=claude,codebuddy,trae-cn,workbuddy` 显式指定')
+    logWarn('未检测到任何受支持的编辑器，可用 `--target=claude,qoder,codex,gemini,trae-cn,workbuddy` 显式指定')
     return
   }
+
+  if (!options.uninstall && !fullSync)
+    logWarn('子集安装：未列出的技能与编辑器保持不变，运行不带参数的 `make skills` 可全量对齐')
 
   const action = options.uninstall ? '移除' : options.copy ? '复制安装' : '软链接安装'
   const prefix = options.dryRun ? `${yellow('[dry-run]')} ` : ''
@@ -198,9 +280,17 @@ function installSkills(options: Options): void {
 
     for (const name of skills) {
       const dest = join(targetDir, name)
+      const source = join(skillsRoot, name)
+      const existed = pathExists(dest)
+
+      // 只动本仓库装出去的东西：指向仓库的软链接、内容一致的副本，或显式 --force
+      if (existed && !options.force && !pointsIntoRepo(dest) && !isRepoCopy(dest, source)) {
+        logWarn(`跳过 ${name}：${targetDir} 下的同名技能并非本仓库安装，${options.uninstall ? '不移除' : '不覆盖'}（加 --force 可强制）`)
+        continue
+      }
 
       if (options.uninstall) {
-        if (!pathExists(dest)) {
+        if (!existed) {
           logSkip(`跳过 ${name}（未安装）`)
           continue
         }
@@ -210,14 +300,11 @@ function installSkills(options: Options): void {
         continue
       }
 
-      const source = join(skillsRoot, name)
-
       if (!options.copy && isLinkedTo(dest, source)) {
         logSkip(`跳过 ${name}（软链接已指向仓库）`)
         continue
       }
 
-      const existed = pathExists(dest)
       if (existed && !options.dryRun)
         rmSync(dest, { recursive: true, force: true })
 
@@ -231,6 +318,9 @@ function installSkills(options: Options): void {
       logOk(`${existed ? '更新' : '安装'} ${name}${options.copy ? '（复制）' : ''}`)
     }
 
+    if (fullSync)
+      removeOrphans(targetDir, options.uninstall ? [] : allSkills, options.dryRun)
+
     console.log('')
   }
 
@@ -241,20 +331,24 @@ function installSkills(options: Options): void {
 function printHelp(): void {
   console.log(`${bold('用法')}：pnpm skills [选项]
 
+默认（不带选项）执行全量对齐：仓库里的所有技能装到所有已检测到的编辑器，
+并清理编辑器中指向本仓库、但仓库里已删除的技能，保证各编辑器技能一致。
+
 ${bold('选项')}
   --target=<ids>   只安装到指定编辑器，逗号分隔
                    可选: ${EDITORS.map(editor => editor.id).join(', ')}
                    别名: ${EDITORS.flatMap(editor => editor.aliases ?? []).join(', ')}
-  --skill=<names>  只安装指定技能，逗号分隔
+  --skill=<names>  只安装指定技能，逗号分隔（此时不做残留清理）
   --copy           复制文件而不是创建软链接
+  --force, -f      允许覆盖/移除编辑器里的同名技能（默认跳过非本仓库安装的技能）
   --uninstall, -u  从各编辑器移除本仓库的技能
   --dry-run, -n    只打印将要执行的操作
   --help, -h       显示本帮助
 
 ${bold('示例')}
   pnpm skills
-  pnpm skills --target=claude,codebuddy
-  pnpm skills --target=traework-cn,workbuddy
+  pnpm skills --target=claude,qoder
+  pnpm skills --target=traework-cn,codex,gemini
   pnpm skills --skill=cli,resume --copy
   pnpm skills --uninstall --target=trae-cn`)
 }

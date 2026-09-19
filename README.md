@@ -9,7 +9,7 @@
 
 ### 一键安装到本地编辑器
 
-克隆本仓库后，一条命令即可把 `skills/` 下的技能补充到本地各 AI 编辑器的全局技能目录（自动检测 Claude Code、CodeBuddy、Trae、TraeWork、Trae 插件、WorkBuddy 等）：
+克隆本仓库后，一条命令即可把 `skills/` 下的技能补充到本地各 AI 编辑器 / CLI 的全局技能目录（自动检测 Claude Code、Qoder、Codex、Gemini CLI、Cursor、Windsurf、Cline、OpenCode、CodeBuddy、Trae、TraeWork、WorkBuddy 等 20+ 客户端）：
 
 ```bash
 pnpm install
@@ -18,21 +18,37 @@ pnpm skills
 
 也可以走 Makefile 入口：`make install && make skills`（`make help` 查看全部命令）。
 
-默认以软链接方式安装，仓库里的改动即时生效，重复执行会更新已安装的技能。常用参数：
+默认以软链接方式安装，仓库里的改动即时生效，重复执行会更新已安装的技能。不带参数时执行**全量对齐**：每个技能都会装到每个已检测到的编辑器，编辑器里指向本仓库但已从仓库删除的技能会被清理，因此不会出现「某个工具有这个技能、另一个没有」。
 
 | 参数 | 说明 |
 |------|------|
-| `--target=claude,workbuddy` | 只安装到指定编辑器 |
-| `--skill=cli,resume` | 只安装指定技能 |
+| `--target=claude,qoder` | 只安装到指定编辑器 |
+| `--skill=cli,resume` | 只安装指定技能（跳过清理，其余技能与编辑器不动） |
 | `--copy` | 复制文件而不是创建软链接 |
+| `--force` | 覆盖/移除编辑器里的同名技能（默认跳过非本仓库安装的技能） |
 | `--uninstall` | 从各编辑器移除本仓库的技能 |
 | `--dry-run` | 只打印将要执行的操作 |
 
-支持的编辑器（配置目录存在即视为已安装）：
+支持的编辑器（配置目录存在即视为已安装，技能目录统一为 `<配置目录>/skills`）：
 
 | `--target` | 客户端 | 技能目录 |
 |------------|--------|----------|
 | `claude` | Claude Code | `~/.claude/skills` |
+| `agents`（别名 `universal`） | Cline / Zed / Warp / Kimi Code 等共用目录 | `~/.agents/skills` |
+| `config-agents`（别名 `amp`、`replit`） | Amp / Replit 共用目录 | `~/.config/agents/skills` |
+| `qoder` | Qoder | `~/.qoder/skills` |
+| `qoder-cn` | Qoder CN | `~/.qoder-cn/skills` |
+| `codex` | Codex | `~/.codex/skills` |
+| `gemini` | Gemini CLI | `~/.gemini/skills` |
+| `antigravity` | Antigravity | `~/.gemini/antigravity/skills` |
+| `cursor` | Cursor | `~/.cursor/skills` |
+| `windsurf` | Windsurf | `~/.codeium/windsurf/skills` |
+| `copilot` | GitHub Copilot CLI | `~/.copilot/skills` |
+| `opencode` | OpenCode | `~/.config/opencode/skills` |
+| `qwen` | Qwen Code | `~/.qwen/skills` |
+| `iflow` | iFlow CLI | `~/.iflow/skills` |
+| `kilo` | Kilo Code | `~/.kilo/skills` |
+| `roo` | Roo Code | `~/.roo/skills` |
 | `codebuddy` | CodeBuddy | `~/.codebuddy/skills` |
 | `codebuddy-cn` | CodeBuddy CN | `~/.codebuddycn/skills` |
 | `trae` | Trae | `~/.trae/skills` |
@@ -40,7 +56,9 @@ pnpm skills
 | `trae-plugin`（别名 `marscode`） | Trae 插件（VS Code / JetBrains） | `~/.marscode/skills` |
 | `workbuddy` | WorkBuddy | `~/.workbuddy/skills` |
 
-脚本只会操作本仓库中存在的技能名，不会影响编辑器里的其他技能。
+路径以 [vercel-labs/skills](https://github.com/vercel-labs/skills) 的支持列表为准，需要更多客户端可在 `scripts/install.ts` 的 `EDITORS` 里追加一行。
+
+脚本只会操作本仓库装出去的技能（指向仓库的软链接，或与仓库内容一致的副本）；编辑器里已有的同名技能会被跳过并提示，加 `--force` 才会覆盖，其他技能更不会碰到。
 
 ### 通过 skills CLI 安装
 
