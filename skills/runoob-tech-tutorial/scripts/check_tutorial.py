@@ -9,6 +9,7 @@
 1. 文件命名：`<序号>-<中文标题>.md`，序号连续、不重复（ERROR）。
 2. 代码块：围栏闭合（ERROR）；语言标注缺失只提醒（WARN）。
 3. 章末「下一站建议」：除最后一章外建议都有（WARN，不阻断）。
+4. 重点标注覆盖度：每章建议出现 `> **学习重点 ⭐**` 与 `> **注意**`（WARN，不阻断）。
 
 标点、字间距、句长、语气、分割线、配图覆盖等写作风格一律不查：
 这些交给写作时的判断，不在校验范围内。
@@ -53,7 +54,7 @@ def scan_file(path: Path, report: Report) -> dict:
     text = path.read_text(encoding="utf-8")
     rel = str(path)
 
-    stats = {"has_next_stop": False}
+    stats = {"has_next_stop": False, "has_key_point": False, "has_caution": False}
 
     in_code = False
     fence_char = ""
@@ -81,6 +82,12 @@ def scan_file(path: Path, report: Report) -> dict:
 
         if "下一站建议" in raw:
             stats["has_next_stop"] = True
+
+        if "学习重点" in raw and "⭐" in raw:
+            stats["has_key_point"] = True
+
+        if "**注意**" in raw or "**踩坑提醒**" in raw:
+            stats["has_caution"] = True
 
     if in_code:
         report.error(rel, f"第 {fence_open_line} 行：代码块未闭合")
@@ -135,6 +142,22 @@ def check_next_stop(paths: list[Path], flags: dict, report: Report) -> None:
             report.warn(str(p), "缺少章末「下一站建议」引用块（协作导航用，建议补上）")
 
 
+def check_highlights(paths: list[Path], flags: dict, report: Report) -> None:
+    """每个章节文件都建议至少一处「学习重点 ⭐」与一处「注意 / 踩坑提醒」（仅提醒）。
+
+    参考资源、README 这类纯链接章自动跳过；其它章没命中时给 WARN，让作者回到
+    该章把常见 / 易错点显式标注一下，不阻断交付。
+    """
+    for p in chapter_files(paths):
+        if "参考资源" in p.name or "资源" in p.name:
+            continue
+        f = flags[str(p)]
+        if not f["has_key_point"]:
+            report.warn(str(p), "未出现 `> **学习重点 ⭐**`：核心概念建议显式标注一下")
+        if not f["has_caution"]:
+            report.warn(str(p), "未出现 `> **注意**` 或 `> **踩坑提醒**`：建议补一个易错点")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="校验教程目录的协作格式（宽松版）")
     parser.add_argument("target", help="教程目录或单个 .md 文件")
@@ -157,6 +180,7 @@ def main() -> int:
 
     check_names(paths, report)
     check_next_stop(paths, flags, report)
+    check_highlights(paths, flags, report)
 
     shown = [p for p in paths if p.name != "README.md"]
     print(f"检查文件：{len(paths)} 个（其中章节文件 {len(shown)} 个）")

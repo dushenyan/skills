@@ -82,11 +82,12 @@ pnpx skills add dushenyan/skills --skill='*' -g
 |-------|-------------|
 | [cli](skills/cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
 | [clarify](skills/clarify) | 模糊需求澄清器：一句话式笼统需求先两阶段问清，输出问题重述卡片，确认后直接开工 |
+| [project-highlights-extractor](skills/project-highlights-extractor) | 项目素材萃取 + 可控包装：八维提炼事实，再沿项目真实方向补主流技术、显性化术语、合理化量级，输出简历要点与面试答辩清单 |
 | [python-project-spec](skills/python-project-spec) | Python 项目规范脚手架：uv 依赖、Makefile、apps/common/tests 目录、docs 模板、Scalar API 文档 |
 | [resume](skills/resume) | 7 个 AI 驱动的求职诊断工具，从简历优化到面试通关 |
 | [ruanyf-document-style-guide](skills/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
 | [ruanyf-paper-explainer](skills/ruanyf-paper-explainer) | 把论文或技术长文改写成阮一峰风格的中文解读文章 |
-| [runoob-tech-tutorial](skills/runoob-tech-tutorial) | 生成菜鸟教程风格、循序渐进的全链路中文技术教程，配套可运行项目案例 |
+| [runoob-tech-tutorial](skills/runoob-tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，配套可运行项目案例 |
 | [shenyan](skills/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
 | [socratic](skills/socratic) | 苏格拉底式思考伙伴：不直接给答案，通过层层追问引导用户澄清决策、检验理解、打磨论证 |
 
