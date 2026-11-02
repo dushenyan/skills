@@ -87,7 +87,7 @@ pnpx skills add dushenyan/skills --skill='*' -g
 | [resume](skills/resume) | 7 个 AI 驱动的求职诊断工具，从简历优化到面试通关 |
 | [ruanyf-document-style-guide](skills/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
 | [ruanyf-paper-explainer](skills/ruanyf-paper-explainer) | 把论文或技术长文改写成阮一峰风格的中文解读文章 |
-| [runoob-tech-tutorial](skills/runoob-tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，配套可运行项目案例 |
+| [runoob-tech-tutorial](skills/runoob-tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，先列知识点清单确保覆盖齐全，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，重点示例同步抽成可运行脚本落到 engineering_examples 示例库，配套可运行项目案例 |
 | [shenyan](skills/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
 | [socratic](skills/socratic) | 苏格拉底式思考伙伴：不直接给答案，通过层层追问引导用户澄清决策、检验理解、打磨论证 |
 
