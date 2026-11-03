@@ -10,6 +10,7 @@
 2. 代码块：围栏闭合（ERROR）；语言标注缺失只提醒（WARN）。
 3. 章末「下一站建议」：除最后一章外建议都有（WARN，不阻断）。
 4. 重点标注覆盖度：每章建议出现 `> **学习重点 ⭐**` 与 `> **注意**`（WARN，不阻断）。
+5. `_meta.yaml` 目录树清单：建议存在，且节点与实际文件/目录一致、UUID 不重复（WARN，不阻断）。
 
 标点、字间距、句长、语气、分割线、配图覆盖等写作风格一律不查：
 这些交给写作时的判断，不在校验范围内。
@@ -28,6 +29,11 @@ CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 FENCE_RE = re.compile(r"^\s*(```|~~~)(.*)$")
 # 章节文件：<序号>-<标题>.md
 CHAPTER_RE = re.compile(r"^(\d+)-(.+)\.md$")
+# _meta.yaml 节点：- name: xxx（顶层 name: xxx 不带列表符，不匹配）
+META_NAME_RE = re.compile(r"^\s*-\s+name:\s*(.+?)\s*$")
+UUID_RE = re.compile(
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+)
 
 
 class Report:
@@ -158,6 +164,45 @@ def check_highlights(paths: list[Path], flags: dict, report: Report) -> None:
             report.warn(str(p), "未出现 `> **注意**` 或 `> **踩坑提醒**`：建议补一个易错点")
 
 
+def check_meta_yaml(target: Path, report: Report) -> None:
+    """校验教程根目录的 _meta.yaml 目录树清单（仅提醒，不阻断）。
+
+    规范见 references/tutorial-structure.md 第五节第 4 小节：文件节点带不重复
+    UUID，目录节点以 children 嵌套。这里只兜底机械项：存在性、节点覆盖、
+    UUID 格式与去重；层级顺序不做深校验。
+    """
+    meta = target / "_meta.yaml"
+    if not meta.exists():
+        report.warn(str(meta), "教程根目录缺少 `_meta.yaml` 目录树清单（知识库导航依赖，建议补上）")
+        return
+
+    meta_names: set[str] = set()
+    ids: list[str] = []
+    pending_name = False
+    for raw in meta.read_text(encoding="utf-8").splitlines():
+        if m := META_NAME_RE.match(raw):
+            meta_names.add(m.group(1))
+            pending_name = True
+            continue
+        if pending_name and raw.strip().startswith("id:"):
+            ids.append(raw.split(":", 1)[1].strip())
+        pending_name = False
+
+    for uid in ids:
+        if not UUID_RE.match(uid):
+            report.warn(str(meta), f"UUID 格式不合法：{uid}")
+    if len(ids) != len(set(ids)):
+        report.warn(str(meta), "存在重复 UUID，每个文件节点应独立生成")
+
+    actual = {p.name for p in target.rglob("*.md")}
+    actual |= {p.name for p in target.iterdir() if p.is_dir()}
+    if missing := sorted(actual - meta_names):
+        report.warn(str(meta), f"目录树缺少节点：{'、'.join(missing)}")
+    if extra := sorted(meta_names - actual):
+        # 根节点 name 不带列表符不会进 meta_names，这里只可能是不再存在的文件/目录节点
+        report.warn(str(meta), f"目录树存在实际不存在的节点：{'、'.join(extra)}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="校验教程目录的协作格式（宽松版）")
     parser.add_argument("target", help="教程目录或单个 .md 文件")
@@ -181,6 +226,8 @@ def main() -> int:
     check_names(paths, report)
     check_next_stop(paths, flags, report)
     check_highlights(paths, flags, report)
+    if target.is_dir():
+        check_meta_yaml(target, report)
 
     shown = [p for p in paths if p.name != "README.md"]
     print(f"检查文件：{len(paths)} 个（其中章节文件 {len(shown)} 个）")

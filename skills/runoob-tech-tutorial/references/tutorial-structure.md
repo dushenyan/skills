@@ -256,3 +256,32 @@ Milvus/                    LangChain/
 - 如教程较长，可拆分为多个文件，按 `01-xxx.md`、`02-xxx.md` 编号，并在首个文件提供目录索引。
 - **禁止在文件开头添加"参考来源"引用行**（如 `> 参考: [官方文档](url)`）。官方资源统一放在最后一个章节"参考资源"中列出即可，文件正文直接从一级标题开始。
 - 教程末尾补一篇 `README.md`，介绍目录结构、依赖安装、项目案例运行方式。
+
+### 4. `_meta.yaml` 目录树清单（教程根目录必备）
+
+教程根目录同时生成一个 `_meta.yaml`，供知识库前端渲染导航树。**文件节点**带随机且不重复的 UUID，**目录节点**只用 `children` 嵌套表示层级、不带 `id`；根节点 `name` 是教程名的 kebab-case。
+
+```yaml
+# Milvus 教程目录树
+# 文件节点带随机且不重复的 UUID，目录节点以 children 嵌套表示层级
+
+name: milvus
+children:
+  - name: README.md
+    id: 501cc5b3-f5af-48c2-9878-a10e7bff030f
+  - name: 01-入门指南
+    children:
+      - name: 01-Milvus教程.md
+        id: ef5f4ca7-830f-434c-91d1-347bdb4f480c
+      - name: 02-谁适合阅读本教程.md
+        id: 36b46079-af0c-4dad-aaec-35c568447c1b
+```
+
+约定：
+
+- 注释头两行照上面模板写：第一行 `<教程名> 教程目录树`，第二行说明 UUID 约定。
+- 节点顺序与磁盘一致：`README.md` 排最前，目录按编号升序，目录内文件按序号升序。
+- UUID 用 `uuidgen` 或等价方式生成小写标准格式，全文件内不得重复；目录节点绝不写 `id`。
+- 根 `name` 取教程目录名转 kebab-case（如 `Milvus教程` → `milvus`，`HarnessEngineering` → `harness-engineering`）。
+- 后补/重命名章节文件时要同步维护该文件。
+- `scripts/check_tutorial.py` 会校验树与实际文件是否一致（WARN）。

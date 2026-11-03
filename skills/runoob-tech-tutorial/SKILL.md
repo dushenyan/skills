@@ -61,14 +61,14 @@ python3 scripts/check_tutorial.py <教程目录>
 
 脚本只兜底**协作必需的机械项**：文件命名与序号连续、代码块闭合（ERROR）；代码块语言标注、章末「下一站建议」、学习重点标注覆盖度只提醒（WARN）。ERROR 改完即止；WARN 扫一眼就好——**WARN 提示某章缺少 `> **学习重点 ⭐**` 或 `> **注意**` 时，回到该章把常见/易错点显式补上**，这是「重点突出」的兜底。标点、字间距、句长、语气等纯写作风格脚本一律不查，写的时候顺手留意即可。
 
-最后补 `README.md`（目录结构、依赖安装、项目运行方式）。
+最后补 `README.md`（目录结构、依赖安装、项目运行方式）和根目录 `_meta.yaml`（教程目录树清单，文件节点带不重复 UUID，规范见 `tutorial-structure.md` 第五节第 4 小节）。
 
 ## 三、引用文件
 
 | 文件 | 什么时候读 | 内容 |
 |---|---|---|
 | `references/narrative-style.md` | 动笔前整场读一次，找语感 | 五条可上手的写法、类比怎么给、什么时候要展开讲、容易出戏的表达、想更严格时的去处 |
-| `references/tutorial-structure.md` | 排目录与写作时 | 章节组织原则、参考菜单、**内容深度基线（六要素）**、章末指引规范、三级目录与命名 |
+| `references/tutorial-structure.md` | 排目录与写作时 | 章节组织原则、参考菜单、**内容深度基线（六要素）**、章末指引规范、三级目录与命名、`_meta.yaml` 目录树规范 |
 | `references/formatting.md` | 排版拿不准时 | 标题与分割线、五种引用块（含常见场景/易错点）、代码块、表格、输出标注、配图提示词 |
 | `references/project-case.md` | 写实战章节时 | 六小节结构、中文资源范围、链接验证要求 |
 | `references/code-examples.md` | 抽配套示例时 | 示例库目录与命名、脚本骨架、高亮/下划线标记、LLM 主题复用 utils、运行验证 |
@@ -77,7 +77,7 @@ python3 scripts/check_tutorial.py <教程目录>
 
 - 三级目录：技术名目录 → 学习阶段子目录 → 章节文件，命名 `<序号>-<中文标题>.md`；完整示例见 `tutorial-structure.md` 第五节。
 - 正文从一级标题开始，**不要加「参考来源」引用行**，官方资源统一放最后一章。
-- 教程根目录补 `README.md`；配套示例落在 `~/Desktop/engineering_examples/<主题>/`，正文对应小节末尾标注脚本路径。
+- 教程根目录补 `README.md` 与 `_meta.yaml` 目录树清单（UUID 约定见 `tutorial-structure.md` 第五节第 4 小节）；配套示例落在 `~/Desktop/engineering_examples/<主题>/`，正文对应小节末尾标注脚本路径。
 
 ## 五、示例对话
 
@@ -89,4 +89,4 @@ python3 scripts/check_tutorial.py <教程目录>
 2. 读 `tutorial-structure.md`，列 Milvus 知识点清单、对照查漏后排章节目录，按「内容深度基线」直接开写。
 3. 一口气写完全部章节：每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透；常见/高频项给 2~3 个变体示例，用 `> **学习重点 ⭐**` 显式标注；易错点单独成块；语气照 `narrative-style.md`、排版照 `formatting.md`、实战章节照 `project-case.md`；每章末尾给「下一站建议」，每 2~3 章一处配图建议，Python 示例用 uv + Google docstring。
 4. 挑 2~5 个重点示例（如 Collection 建表、向量插入与检索、分区键对比实验）照 `code-examples.md` 抽成脚本落 `~/Desktop/engineering_examples/milvus/`，计算值下划线、关键结论高亮，逐个跑通后回正文标注路径。
-5. 跑 `check_tutorial.py` 把 ERROR 清零、扫一眼 WARN（特别是「学习重点/注意」覆盖度），补 `README.md`，交付。
+5. 跑 `check_tutorial.py` 把 ERROR 清零、扫一眼 WARN（特别是「学习重点/注意」覆盖度），补 `README.md` 与 `_meta.yaml`，交付。

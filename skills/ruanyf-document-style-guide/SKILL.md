@@ -1,9 +1,9 @@
 ---
 name: ruanyf-document-style-guide
-description: 阮一峰中文技术文档写作规范：字间距、句子、段落、标点、数值、标题层级的硬规则清单，外加阮一峰叙事风格（问题驱动、短句口语、生活化类比）。当用户要求检查或优化中文文档的排版与写作风格（如「检查一下这段中文的排版」「按写作规范改写」「这段话读起来不像人话」「写得像阮一峰一点」）时调用，用于生成或修改面向中文读者的技术文档。
+description: 阮一峰中文技术文档写作规范：字间距、句子、段落、标点、数值、标题层级的硬规则清单，外加阮一峰叙事风格（问题驱动、短句口语、生活化类比，清晰明了、通俗易懂）。生成的文档自动带 front-matter 元信息（id/title/createTime）。当用户要求检查或优化中文文档的排版与写作风格（如「检查一下这段中文的排版」「按写作规范改写」「这段话读起来不像人话」「写得像阮一峰一点」），或要求生成面向中文读者的技术文档/文章时使用。
 metadata:
   author: Shenyan Du
-  version: "2026.10.14"
+  version: "2026.11.3"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -23,6 +23,9 @@ metadata:
 - **段落**：一个段落一个主题，中心句放段首，不超过七行（最佳 ≤4 行）。
 - **数值用半角**：`1000 元`，不是 `１０００元`。千位以上加千分号。
 - **避免感叹号**，禁止连用（`！！`）。
+- **对错符号用轻量字符**：`✔`、`✘`，不用带底色的 `✅`、`❌`。
+
+**写作风格总要求（重点）**：一切讲解性文字都用阮一峰老师的写作风格——**清晰明了、通俗易懂**。读者不需要专业背景也能看懂，读完能复述出「它解决什么问题、怎么用」。做不到这一点就是不合格，先改风格再谈其他。
 
 风格三句话（细节见 core-narrative-style）：
 
@@ -38,13 +41,29 @@ metadata:
 | 标题 | 四级标题层级与结构规则 | [core-title](references/core-title.md) |
 | 文本 | 字间距、句子、写作风格、英文处理 | [core-text](references/core-text.md) |
 | 段落 | 段落原则与引用格式 | [core-paragraph](references/core-paragraph.md) |
-| 标点符号 | 各标点的全半角用法与易错点 | [core-marks](references/core-marks.md) |
+| 标点符号 | 各标点的全半角用法与易错点，含 ✔／✘ 图形符号 | [core-marks](references/core-marks.md) |
 | 数值 | 半角数字、千分号、货币、范围、增减 | [core-number](references/core-number.md) |
 | 文档体系 | 软件手册的章节结构与文件命名 | [feature-document-structure](references/feature-document-structure.md) |
 | 参考链接 | 引用第三方内容的标注规范 | [best-practices-references](references/best-practices-references.md) |
+
+## 输出规范：文档 front-matter
+
+**生成新的文档文件时，正文前必须写 front-matter 元信息**（校对/改写已有文档时，若缺则补上）：
+
+```markdown
+---
+id: 3f2a1c8e-7d4b-4e9a-b6f0-2c5d8e1a9b34
+title: 文章标题
+createTime: 2026-11-03 15:30
+---
+```
+
+- `id`：UUID v4，用 `uuidgen` 或 `python3 -c "import uuid; print(uuid.uuid4())"` 生成，不要手编。
+- `title`：文章标题，与正文一级标题一致。
+- `createTime`：创建时间，精确到年月日时分（`%Y-%m-%d %H:%M`），用 `date "+%Y-%m-%d %H:%M"` 取当前时间；后续修改不更新此字段。
 
 ## 校对工作流
 
 1. **写前**：先过一遍核心速查，硬规则入脑。
 2. **写中**：涉及具体类别（如数值范围、英文处理）时，按需加载对应参考；讲解性文字先加载 core-narrative-style 找手感。
-3. **写后**：逐条对照核心速查清单，重点查中英文空格、全半角混用、超长句；再过一遍风格四问——开头在讲问题吗？有类比吗？有一句「我」的观察吗？避开禁用腔调了吗？
+3. **写后**：逐条对照核心速查清单，重点查中英文空格、全半角混用、超长句；再过一遍风格四问——开头在讲问题吗？有类比吗？有一句「我」的观察吗？避开禁用腔调了吗？最后确认 front-matter 齐全（id、title、createTime 三项都有）。
