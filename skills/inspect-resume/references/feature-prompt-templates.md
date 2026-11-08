@@ -1,5 +1,5 @@
 ---
-name: resume-prompt-templates
+name: feature-prompt-templates
 description: 7个面向技术岗的求职提示词模板，每个内嵌资深面试官的评判口径，可直接复制使用
 ---
 

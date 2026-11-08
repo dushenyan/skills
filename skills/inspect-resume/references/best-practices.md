@@ -1,9 +1,9 @@
 ---
-name: resume-best-practices
+name: best-practices
 description: 技术岗求职诊断的使用流程、常见误区，以及与 project-highlights-extractor 的分工
 ---
 
-# 简历优化与求职最佳实践
+# 简历审查与求职最佳实践
 
 ## 使用流程
 
@@ -24,7 +24,7 @@ description: 技术岗求职诊断的使用流程、常见误区，以及与 pro
 | 需求 | 用哪个 |
 |------|--------|
 | 把复盘/周报/项目素材萃取成分档简历要点、STAR 故事、可控包装 | `project-highlights-extractor` |
-| 诊断为何没回执、锚定赛道、制定投放策略、写 outreach、模拟面试与评分、全案复盘 | 本技能（resume） |
+| 诊断为何没回执、锚定赛道、制定投放策略、写 outreach、模拟面试与评分、全案复盘 | 本技能（inspect-resume） |
 | 整份简历从零生成 / 按 JD 定向 / 批判打分 | 本技能的提示词模板 |
 
 两者互补：本技能管**求职策略与面试判定**，那个技能管**简历内容的深加工**。

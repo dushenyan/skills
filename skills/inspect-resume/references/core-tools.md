@@ -1,5 +1,5 @@
 ---
-name: resume-tools
+name: core-tools
 description: 7个面向技术岗的求职诊断工具，每个都给出资深面试官的评判标准、可执行流程与输出模板
 ---
 

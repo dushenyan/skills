@@ -9,7 +9,7 @@
 1. 文件命名：`<序号>-<中文标题>.md`，序号连续、不重复（ERROR）。
 2. 代码块：围栏闭合（ERROR）；语言标注缺失只提醒（WARN）。
 3. 章末「下一站建议」：除最后一章外建议都有（WARN，不阻断）。
-4. 重点标注覆盖度：每章建议出现 `> **学习重点 ⭐**` 与 `> **注意**`（WARN，不阻断）。
+4. 重点标注覆盖度：每章建议出现 `> 学习重点 ⭐` 与 `> 注意`（WARN，不阻断）。
 5. `_meta.yaml` 目录树清单：建议存在，且节点与实际文件/目录一致、UUID 不重复（WARN，不阻断）。
 6. 命令占位符：`bash` / `sh` 代码块里出现独立 `...` 或 `xxx` 时提醒（WARN，不阻断）。
 
@@ -181,9 +181,9 @@ def check_highlights(paths: list[Path], flags: dict, report: Report) -> None:
             continue
         f = flags[str(p)]
         if not f["has_key_point"]:
-            report.warn(str(p), "未出现 `> **学习重点 ⭐**`：核心概念建议显式标注一下")
+            report.warn(str(p), "未出现 `> 学习重点 ⭐`：核心概念建议显式标注一下")
         if not f["has_caution"]:
-            report.warn(str(p), "未出现 `> **注意**` 或 `> **踩坑提醒**`：建议补一个易错点")
+            report.warn(str(p), "未出现 `> 注意` 或 `> **踩坑提醒**`：建议补一个易错点")
 
 
 def check_meta_yaml(target: Path, report: Report) -> None:
