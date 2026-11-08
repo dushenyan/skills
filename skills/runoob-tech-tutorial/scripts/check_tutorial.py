@@ -11,6 +11,7 @@
 3. 章末「下一站建议」：除最后一章外建议都有（WARN，不阻断）。
 4. 重点标注覆盖度：每章建议出现 `> **学习重点 ⭐**` 与 `> **注意**`（WARN，不阻断）。
 5. `_meta.yaml` 目录树清单：建议存在，且节点与实际文件/目录一致、UUID 不重复（WARN，不阻断）。
+6. 命令占位符：`bash` / `sh` 代码块里出现独立 `...` 或 `xxx` 时提醒（WARN，不阻断）。
 
 标点、字间距、句长、语气、分割线、配图覆盖等写作风格一律不查：
 这些交给写作时的判断，不在校验范围内。
@@ -29,6 +30,11 @@ CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 FENCE_RE = re.compile(r"^\s*(```|~~~)(.*)$")
 # 章节文件：<序号>-<标题>.md
 CHAPTER_RE = re.compile(r"^(\d+)-(.+)\.md$")
+# 只在这些 shell 类代码块里查占位符，避免误伤 SQL 的 `...` 与 Python 的 Ellipsis
+SHELL_LANGS = {"bash", "sh", "shell", "zsh"}
+# 独立出现的三点或 xxx 才算占位，`../data`、`a...b` 不匹配
+PLACEHOLDER_ELLIPSIS_RE = re.compile(r"(?:^|\s)\.\.\.(?:\s|$)")
+PLACEHOLDER_XXX_RE = re.compile(r"(?:^|\s)xxx(?:\s|$)", re.IGNORECASE)
 # _meta.yaml 节点：- name: xxx（顶层 name: xxx 不带列表符，不匹配）
 META_NAME_RE = re.compile(r"^\s*-\s+name:\s*(.+?)\s*$")
 UUID_RE = re.compile(
@@ -64,6 +70,7 @@ def scan_file(path: Path, report: Report) -> dict:
 
     in_code = False
     fence_char = ""
+    code_lang = ""
     fence_open_line = 0
 
     for i, raw in enumerate(text.splitlines(), start=1):
@@ -74,6 +81,7 @@ def scan_file(path: Path, report: Report) -> dict:
             if not in_code:
                 in_code = True
                 fence_char = char
+                code_lang = info.split()[0].lower() if info else ""
                 fence_open_line = i
                 if not info:
                     report.warn(rel, f"第 {i} 行：代码块缺少语言标注（```python / ```bash ...）")
@@ -81,9 +89,23 @@ def scan_file(path: Path, report: Report) -> dict:
                 # 按 CommonMark，闭合围栏不能带 info string。
                 # 带 info string 的围栏即使出现在代码块内，也只是代码内容。
                 in_code = False
+                code_lang = ""
             continue
 
         if in_code:
+            # 注释里的省略号是说明文字，不算命令占位；只查真正会执行的行
+            if (
+                code_lang in SHELL_LANGS
+                and not raw.lstrip().startswith("#")
+                and (
+                    PLACEHOLDER_ELLIPSIS_RE.search(raw)
+                    or PLACEHOLDER_XXX_RE.search(raw)
+                )
+            ):
+                report.warn(
+                    rel,
+                    f"第 {i} 行：命令含占位符，请写成完整可执行版本（不要用 `...` / `xxx`）",
+                )
             continue
 
         if "下一站建议" in raw:
