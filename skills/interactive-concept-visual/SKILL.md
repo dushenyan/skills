@@ -1,6 +1,6 @@
 ---
 name: interactive-concept-visual
-description: Build a single-file interactive visual explainer for one technical concept, adapting the layout to what the concept needs, with compact spacing and a light/dark toggle. Use when the user asks for 交互式教学页, 概念可视化, an interactive lesson, or a visual explainer. Do not use for dashboards, slide decks, or production sites.
+description: 把一个技术概念做成一页单文件交互式可视化讲解页：版式按概念本身的难点选（对比、流程、分层、参数、状态、抽象），紧凑排版，支持深色/浅色切换，读者能亲手操作并看见概念如何运作。当用户要求「交互式教学页」「概念可视化」「做个能动手的讲解页」「visual explainer」时使用。不用于仪表盘、幻灯片或正式站点。
 ---
 
 # 交互式概念可视化
