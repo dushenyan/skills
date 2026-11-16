@@ -56,9 +56,3 @@ description: 苏格拉底六类提问法：澄清概念、检验假设、探究�
 - 连续两轮用同一类问题，说明钻牛角尖了，换一类。
 - 「反思元问题」最锋利也最容易冒犯，只在信任建立后（通常第三轮之后）使用。
 - 每个问题都要能接住用户的回答继续问下去，一次性问题不要问。
-
-<!--
-来源参考：
-- Paul, R. & Elder, L. Critical Thinking: The Art of Socratic Questioning
-- https://en.wikipedia.org/wiki/Socratic_questioning
--->

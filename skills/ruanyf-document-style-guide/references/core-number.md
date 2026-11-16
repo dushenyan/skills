@@ -29,8 +29,3 @@ description: 数值规则：半角数字、千分号、货币、数值范围、�
 ## 要点
 
 - 增减表述是最容易写错语义的地方，改稿时单独过一遍数字段落。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/number.md
--->

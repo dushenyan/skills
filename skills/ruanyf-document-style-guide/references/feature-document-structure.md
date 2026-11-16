@@ -31,8 +31,3 @@ description: 软件手册的章节结构与文档文件命名规则
 
 - 这套结构适用于完整的手册类文档；单篇文章只需要它的精神：简介 → 上手 → 深入 → 参考。
 - 中文文件名是常见反例，新建文档文件时第一个检查项。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/structure.md
--->

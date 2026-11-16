@@ -403,9 +403,3 @@ export function generateErrorReport(error: unknown): string {
 - 处理未捕获的异常和 Promise 拒绝
 - 记录错误日志，便于问题排查
 - 生成错误报告，帮助用户报告问题
-
-<!--
-来源参考：
-- file-wizard 项目源码
-- Node.js 错误处理最佳实践
--->

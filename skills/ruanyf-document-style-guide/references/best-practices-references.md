@@ -22,8 +22,3 @@ description: 参考链接规范：引用第三方内容的出处标注，以及�
 - [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)，by sparanoid
 - [中文排版需求](https://www.w3.org/TR/clreq/)，by W3C
 - [Google Developer Documentation Style Guide](https://developers.google.com/style/)，by Google
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/reference.md
--->

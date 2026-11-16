@@ -44,8 +44,3 @@ description: 标题层级规则：四级标题的定义、结构禁忌与并列�
 
 - 点号（句号、逗号、冒号等）不得出现在标题末尾；问号、引号可以。
 - 谨慎使用四级标题，保持层级简单。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/title.md
--->

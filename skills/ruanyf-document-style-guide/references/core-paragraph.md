@@ -37,8 +37,3 @@ One man's constant is another man's variable. — Alan Perlis
 
 - 中心句前置是最能提升可读性的一条，写完一段先检查第一句。
 - 超过七行的段落，几乎总能按「一个主题」拆成两段。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/paragraph.md
--->

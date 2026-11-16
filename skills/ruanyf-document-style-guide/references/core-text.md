@@ -46,8 +46,3 @@ description: 文本规则：字间距、句子长度与句式、写作风格、�
 
 - 中英文之间加半角空格是本规范的招牌规则，校对时第一个查它。
 - 长句拆分优先拆成并列短句，不靠逗号硬连。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/text.md
--->

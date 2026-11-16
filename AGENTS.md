@@ -85,11 +85,6 @@ description: {description}
 
 - 重要细节 1
 - 重要细节 2
-
-<!--
-来源参考：
-- {source-url}
--->
 ```
 
 ### `GENERATION.md`

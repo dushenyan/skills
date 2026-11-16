@@ -66,8 +66,3 @@ description: 标点符号规则：全半角原则与句号、顿号、引号、�
 - 校对优先级最高的三处：中英文空格、全半角混用、顿号当逗号用。
 - `...` 改 `⋯⋯` 是中文文档最常见的迁移错误。
 - 对错、通过失败一类的标记用 `✔`、`✘`，不用 `✅`、`❌`。
-
-<!--
-来源参考：
-- https://github.com/ruanyf/document-style-guide/blob/master/docs/marks.md
--->
