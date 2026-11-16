@@ -80,7 +80,7 @@ pnpx skills add dushenyan/skills --skill='*' -g
 
 | 技能 | 描述 |
 |-------|-------------|
-| [cli](skills/cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
+| [script-cli](skills/script-cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
 | [clarify](skills/clarify) | 模糊需求澄清器：一句话式笼统需求先两阶段问清，输出问题重述卡片，确认后直接开工 |
 | [article-readability-rewriter](skills/article-readability-rewriter) | 诊断并改写不好读的文章：先判断吸引力来源，再按顺序、形态、密度、语气四类杠杆逐条改写 |
 | [project-highlights-extractor](skills/project-highlights-extractor) | 项目素材萃取 + 可控包装：八维提炼事实，再沿项目真实方向补主流技术、显性化术语、合理化量级，输出简历要点与面试答辩清单 |
