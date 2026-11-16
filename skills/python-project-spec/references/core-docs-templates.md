@@ -1,3 +1,8 @@
+---
+name: core-docs-templates
+description: docs 目录 7 份文档（01~07）的骨架模板与内容要求，创建 docs/ 结构或补齐项目文档时读取。
+---
+
 # docs 文档目录规范
 
 本文件覆盖 Skill 的「五、docs 文档目录规范」。

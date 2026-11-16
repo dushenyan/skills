@@ -3,7 +3,7 @@ name: shenyan
 description: 个人的 JavaScript/TypeScript 项目工具和约定。在设置新项目、配置 ESLint/Prettier 替代品、管理 monorepo、发布库或提及的偏好时使用。
 metadata:
   author: Shenyan Du
-  version: "2026.02.03"
+  version: "2026.11.16"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -89,8 +89,6 @@ export default antfu()
 
 完成任务时，运行 `pnpm run lint --fix` 来格式化代码并修复代码风格。
 
-详细配置选项：[antfu-eslint-config](references/antfu-eslint-config.md)
-
 ### Git Hooks
 
 ```json
@@ -124,8 +122,5 @@ export default antfu()
 
 | 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
-| ESLint 配置 | 框架支持、格式化器、规则覆盖、VS Code 设置 | [antfu-eslint-config](references/antfu-eslint-config.md) |
-| 项目设置 | .gitignore、GitHub Actions、VS Code 扩展 | [setting-up](references/setting-up.md) |
-| 应用开发 | Vue/Nuxt/UnoCSS 约定和模式 | [app-development](references/app-development.md) |
-| 库开发 | tsdown 打包、纯 ESM 发布 | [library-development](references/library-development.md) |
-| Monorepo | pnpm 工作区、集中式别名、Turborepo | [monorepo](references/monorepo.md) |
+| 库开发 | tsdown 打包、纯 ESM 发布 | [feature-library-development](references/feature-library-development.md) |
+| Monorepo | pnpm 工作区、集中式别名、Turborepo | [feature-monorepo](references/feature-monorepo.md) |

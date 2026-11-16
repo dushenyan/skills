@@ -1,6 +1,11 @@
+---
+name: feature-code-examples
+description: engineering_examples 示例库落位规范：目录与命名、脚本骨架、高亮/下划线标记、LLM 主题复用 utils 与运行验证，抽配套脚本时读取。
+---
+
 # 配套代码示例（engineering_examples 示例库）
 
-教程正文里的代码块是给"读"的，示例库里的脚本是给"跑"的。整份教程写完后，把最重要、最能帮读者建立手感的 **2~5 个示例**抽成编号可运行脚本，落到 `/Users/shenyandu/Desktop/engineering_examples/` 下的新主题目录。动笔前先翻一眼仓库里的既有脚本（如 `context/01_context_slots.py`、`utils.py`），照它的手感写。
+教程正文里的代码块是给"读"的，示例库里的脚本是给"跑"的。整份教程写完后，把最重要、最能帮读者建立手感的 **2~5 个示例**抽成编号可运行脚本，落到 `~/Desktop/engineering_examples/` 下的新主题目录。动笔前先翻一眼仓库里的既有脚本（如 `context/01_context_slots.py`、`utils.py`），照它的手感写。
 
 ## 一、仓库结构与落位规则
 
@@ -73,8 +78,3 @@ engineering_examples/
   ```markdown
   > 可运行示例：`engineering_examples/milvus/03_partition.py`
   ```
-
-<!--
-来源参考：
-- /Users/shenyandu/Desktop/engineering_examples（context/01_context_slots.py、utils.py、config.py 的既有约定）
--->

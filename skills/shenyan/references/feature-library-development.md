@@ -1,5 +1,5 @@
 ---
-name: library-development
+name: feature-library-development
 description: 使用 tsdown 构建和发布 TypeScript 库。在创建 npm 包、配置库打包或设置 package.json 导出时使用。
 ---
 

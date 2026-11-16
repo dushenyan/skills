@@ -1,3 +1,8 @@
+---
+name: core-dependency-and-makefile
+description: uv 依赖环境与 Makefile 规范：依赖初始化、命令组织、端口清理与注释位置，初始化依赖或编写 Makefile 时读取。
+---
+
 # 依赖管理与 Makefile 规范
 
 本文件覆盖 Skill 的「一、依赖管理：uv 环境」与「二、Makefile 规范」两部分。

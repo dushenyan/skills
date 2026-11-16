@@ -3,7 +3,7 @@ name: image-prompt-designer
 description: 把任意图片需求转成可直接生成的方案：先判用途与图类型，再按可裁剪的提示词骨架写清主体、构图、风格与文字，生成后校验。当用户要求生成图片、配图、海报、封面、插画、信息图、示意图或文生图提示词时使用。不用于修图、裁剪或代码图表。
 metadata:
   author: Shenyan Du
-  version: "2026.11.13"
+  version: "2026.11.14"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 

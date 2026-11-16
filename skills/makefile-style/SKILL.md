@@ -3,7 +3,7 @@ name: makefile-style
 description: Makefile 组织规范：按编号章节给命令分类，每个分类收敛出一个总命令，命令成对命名并在终端执行前后输出重点提示，统一排版并由 `make help` 自动生成目录。编写、重构或补充项目 Makefile，统一命令入口时使用；用户提到「make help / Makefile 规范 / 命令太乱 / 命令分类 / 总命令 / 终端提示」时也应触发。
 metadata:
   author: Shenyan Du
-  version: "2026.11.14"
+  version: "2026.11.16"
   source: 从 yanview 项目 Makefile 提炼，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -24,13 +24,13 @@ Makefile 是项目操作的唯一入口。写的人按分类放命令，用的�
 
 | 主题 | 描述 | 参考 |
 |------|------|------|
-| Makefile 模板 | 完整可复制骨架：变量区、九个分类、总命令、自动 help 与检查清单 | [makefile-template](references/makefile-template.md) |
+| Makefile 模板 | 完整可复制骨架：变量区、九个分类、总命令、自动 help 与检查清单 | [makefile-template](references/core-makefile-template.md) |
 
 ## 应用流程
 
 1. **盘点命令**：先按操作对象分组（发布打包、容器操作、数据运维…），再按「依赖 → 开发 → 构建 → 质量 → 部署 → 清理 → 运维」排序。同一前缀的命令（`docker-*`、`db-*`）自成章节——它们操作的是同一个对象，混进「部署」会让 help 分不清哪些是上线动作、哪些是日常运维。归不进去的说明它是子命令，应当挂到某个总命令下。
 2. **先定总命令**：每个分类先写聚合 target（如 `build`、`check`、`serve`），再写它依赖的子命令。总命令是默认路径，子命令是 CI 与局部调试用的零件。
-3. **套用模板**：结构、变量区、help 的 awk 实现见 [Makefile 模板](references/makefile-template.md)，直接复制后删掉不用的分类。
+3. **套用模板**：结构、变量区、help 的 awk 实现见 [Makefile 模板](references/core-makefile-template.md)，直接复制后删掉不用的分类。
 4. **自检**：跑一遍 `make help`，逐条对照源文件——确认每个 target 都出现在目录里（漏写行尾 `##` 的会消失）、分组正确、分类名不带序号、列对齐、别名没有重复出现；再确认每个分类的总命令能独立跑通。
 
 ## 分类参考

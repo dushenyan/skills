@@ -1,3 +1,8 @@
+---
+name: core-project-layout
+description: 目录结构与 PEP 8 命名规范：apps/common/tests 目录划分、文件/类/函数命名与名实相符检查，划分目录或命名文件时读取。
+---
+
 # 目录结构与命名规范
 
 本文件覆盖 Skill 的「三、目录结构规范（必须）」，含命名规范与文件一致性要求。
@@ -22,7 +27,7 @@
 │   ├── utils.py
 │   └── ...
 ├── tests/                         # 测试目录，与 apps 结构对应
-├── docs/                          # 项目文档（见 docs-templates.md）
+├── docs/                          # 项目文档（见 core-docs-templates.md）
 ├── Makefile
 ├── pyproject.toml                 # uv 依赖配置
 ├── README.md

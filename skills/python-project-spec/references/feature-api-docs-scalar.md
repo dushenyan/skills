@@ -1,3 +1,8 @@
+---
+name: feature-api-docs-scalar
+description: Scalar 交互式 API 文档接入规范：字段配置与中文 title/description/example 预填，项目对外提供 HTTP 服务时读取。
+---
+
 # 服务 API 文档规范（Scalar）
 
 本文件覆盖 Skill 的「六、服务 API 文档规范（Scalar）」。

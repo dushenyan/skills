@@ -1,5 +1,5 @@
 ---
-name: 可执行命令校验
+name: best-practices-executable-commands
 description: 生成教程时先定环境基线，再对齐命令。写作与交付前按七维清单核对完整性、环境、位置、实例、真实性、前置条件与长命令释义。
 ---
 

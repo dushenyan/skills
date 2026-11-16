@@ -1,5 +1,5 @@
 ---
-name: packaging-rules
+name: core-packaging-rules
 description: 简历包装的边界与手法：三档充实方式、红线清单、技术自洽检查、主流技术对照链路、面试答辩准备。
 ---
 
@@ -83,8 +83,3 @@ description: 简历包装的边界与手法：三档充实方式、红线清单�
 - 职责类：这块是你一个人做的吗？→ 明确边界（我负责 X，与 Y 团队对齐 Z）。
 
 一条包装如果连一个像样的追问都构造不出来，说明它经不起面试，删掉。
-
-<!--
-来源参考：
-- 简历量化与 STAR 组织口径见本技能 references/resume-standards.md
--->

@@ -1,3 +1,8 @@
+---
+name: advanced-case-study
+description: 一篇技术讲解文章的完整改写对照案例：原稿诊断、逐杠杆改写与改写后全文，用于对照学习各杠杆怎么落地。
+---
+
 # 改写对照案例
 
 案例原文是关于 Function Calling、Tool Use 与 ReAct 的技术讲解。

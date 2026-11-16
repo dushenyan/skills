@@ -1,6 +1,10 @@
 ---
 name: article-readability-rewriter
 description: 诊断并改写各类文章，用先场景后概念、先演后讲、类比加实例、压缩重复等手法提升阅读兴趣。当用户说文章不好读、干巴、没意思，或要求增强吸引力、帮忙改写润色时使用。不用于纯校对、排版检查或规范文档。
+metadata:
+  author: Shenyan Du
+  version: "2026.11.16"
+  source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
 # Article Readability Rewriter
@@ -175,4 +179,4 @@ description: 诊断并改写各类文章，用先场景后概念、先演后讲�
 
 ## 参考
 
-需要看完整的改写对照案例，读 `references/case-study.md`。
+需要看完整的改写对照案例，读 `references/advanced-case-study.md`。

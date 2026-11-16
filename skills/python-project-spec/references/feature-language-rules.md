@@ -1,3 +1,8 @@
+---
+name: feature-language-rules
+description: 主语言标识规则：在 .trae/rules.md 写入中文为主语言的声明，初始化项目规则文件时读取。
+---
+
 # 主语言标识（写入项目规则文件）
 
 本文件覆盖 Skill 的「七、主语言标识（写入项目规则文件）」。

@@ -1,3 +1,8 @@
+---
+name: core-code-comments
+description: Google 风格 docstring 规范：Args/Returns/Raises 写法与「解释为什么」的注释原则，编写或审查 docstring 时读取。
+---
+
 # 代码注释规范（Google 风格 docstring）
 
 本文件覆盖 Skill 的「四、代码注释规范」。

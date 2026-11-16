@@ -3,7 +3,7 @@ name: ruanyf-document-style-guide
 description: 阮一峰中文技术文档写作规范：字间距、句子、段落、标点、数值、标题层级的硬规则清单，外加阮一峰叙事风格（问题驱动、短句口语、生活化类比，清晰明了、通俗易懂）。生成的文档自动带 front-matter 元信息（id/title/createTime）。当用户要求检查或优化中文文档的排版与写作风格（如「检查一下这段中文的排版」「按写作规范改写」「这段话读起来不像人话」「写得像阮一峰一点」），或要求生成面向中文读者的技术文档/文章时使用。
 metadata:
   author: Shenyan Du
-  version: "2026.11.3"
+  version: "2026.11.16"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 

@@ -1,9 +1,9 @@
 ---
-name: runoob-tech-tutorial
+name: tech-tutorial
 description: 生成结构完整、内容充实的技术教程与学习材料。默认手法：菜鸟教程式章节结构（先列知识点清单查漏，必备骨架 + 按需章节）、阮一峰式叙事语气、每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透、重点用标注突出并给 2~3 个变体、配可运行项目案例、章末「下一站建议」，并把重点示例抽成可运行脚本落到示例库。**这套手法是默认值，不是硬约束**：用户明确提出的语言、篇幅、读者、范围、风格、输出形态、落位路径、配套要求一律优先。当用户要一份某技术的教程、学习路径、入门到进阶系列、知识体系梳理或培训材料（如「生成一份 Milvus 教程」「写套 FastAPI 入门到进阶教程」「梳理一下 Redis 的知识体系」），或希望教程「更全面」「更详细」「重点突出」时调用。只讲一个概念、答一次疑、写单段示例或做代码审查时不要调用。
 metadata:
   author: Shenyan Du
-  version: "2026.11.9"
+  version: "2026.11.16"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -90,11 +90,11 @@ metadata:
 
 **Step 2 · 知识点清单与排目录**
 
-读 `references/tutorial-structure.md`，先照官方文档目录和该技术的常见用途列一份**知识点清单**（每项标注「必备 / 进阶 / 可略」），再按 Step 0 的调节方案**取舍排章节目录**——调节方案说"砍选型对比"就直接砍掉，不用纠结。**逐项对照清单查漏**：完整版要覆盖全部，精简版只覆盖"必备"项；漏了要么补章要么并入相关章，确认无遗漏后**直接开写**，不要停下来等确认。
+读 `references/core-tutorial-structure.md`，先照官方文档目录和该技术的常见用途列一份**知识点清单**（每项标注「必备 / 进阶 / 可略」），再按 Step 0 的调节方案**取舍排章节目录**——调节方案说"砍选型对比"就直接砍掉，不用纠结。**逐项对照清单查漏**：完整版要覆盖全部，精简版只覆盖"必备"项；漏了要么补章要么并入相关章，确认无遗漏后**直接开写**，不要停下来等确认。
 
 **Step 3 · 一次性写完全部章节**
 
-- 动笔前读一次 `references/narrative-style.md` 找语感，同时对照 `references/tutorial-structure.md` 第二节的「内容深度基线」——完整版按六要素讲透，精简版按 Step 0 说的三要素讲；排版拿不准查 `references/formatting.md`；写实战章节（如果 Step 0 没砍）读 `references/project-case.md`。同一份文件整场只读一次。
+- 动笔前读一次 `references/core-narrative-style.md` 找语感，同时对照 `references/core-tutorial-structure.md` 第二节的「内容深度基线」——完整版按六要素讲透，精简版按 Step 0 说的三要素讲；排版拿不准查 `references/feature-formatting.md`；写实战章节（如果 Step 0 没砍）读 `references/feature-project-case.md`。同一份文件整场只读一次。
 - 常见/高频知识点：完整版给 2~3 个变体，精简版给 1 个；易混概念完整版用对比表，精简版用一两句话区分即可；易错点完整版单独用 `> 注意` 成块提醒，精简版只在容易炸的地儿插一句。
 - 动笔前先定本教程的**环境基线**（运行形态、执行位置、实例规模、版本与依赖），写进 README 的「环境准备」与安装章开头；后续章节的命令一律对齐基线，切换环境必须在那一节显式声明并给出搭建步骤。
 - 写命令时遵守 `references/best-practices-executable-commands.md`：参数写全、单机示例只给单机能力、地址随执行位置变化、每实例独有的配置逐台改、不写伪命令。
@@ -118,7 +118,7 @@ metadata:
 
 用户此前说过"不用脚本"就直接进 Step 5。
 
-**第二步：判为「配」时**，从正文里挑最能帮读者建立手感的示例（通常是核心用法、对比实验、易错演示这三类），在 `~/Desktop/engineering_examples/` 下**新开一个主题目录**落成编号可运行脚本。动笔前读 `references/code-examples.md`，照仓库约定写：头部 docstring、计算值 `calc()` 下划线、关键结论高亮块、结尾要点总结；只新增目录，不改 `utils.py`/`config.py` 等既有文件。写完**逐个实际运行验证**（LLM 主题用 `USE_MOCK=1` 离线跑通），再回到教程正文，在对应小节末尾标注脚本路径。
+**第二步：判为「配」时**，从正文里挑最能帮读者建立手感的示例（通常是核心用法、对比实验、易错演示这三类），在 `~/Desktop/engineering_examples/` 下**新开一个主题目录**落成编号可运行脚本。动笔前读 `references/feature-code-examples.md`，照仓库约定写：头部 docstring、计算值 `calc()` 下划线、关键结论高亮块、结尾要点总结；只新增目录，不改 `utils.py`/`config.py` 等既有文件。写完**逐个实际运行验证**（LLM 主题用 `USE_MOCK=1` 离线跑通），再回到教程正文，在对应小节末尾标注脚本路径。
 
 **判为「不配」时**，直接进 Step 5，并在交付说明里用一句话讲清原因（例如"本教程以命令与配置为主，未配套脚本"）。
 
@@ -139,26 +139,26 @@ python3 scripts/check_tutorial.py <教程目录>
 
 最后再对每个 `bash` 代码块做一次命令审查（五个问题见 `references/best-practices-executable-commands.md` 的「交付前自检」）：能实测的本地跑一遍，不能实测的在命令旁标注前置条件与预期输出。
 
-最后，默认形态下补 `README.md`（目录结构、依赖安装、项目运行方式）和根目录 `_meta.yaml`（教程目录树清单，文件节点带不重复 UUID，规范见 `tutorial-structure.md` 第五节第 4 小节）。用户指定了别的落位或格式时，按用户的形态收尾，不强塞这两个文件。
+最后，默认形态下补 `README.md`（目录结构、依赖安装、项目运行方式）和根目录 `_meta.yaml`（教程目录树清单，文件节点带不重复 UUID，规范见 `core-tutorial-structure.md` 第五节第 4 小节）。用户指定了别的落位或格式时，按用户的形态收尾，不强塞这两个文件。
 
 ## 三、引用文件
 
 | 文件 | 什么时候读 | 适用条件 | 内容 |
 |---|---|---|---|
-| `references/narrative-style.md` | 动笔前整场读一次，找语感 | 用户没有指定别的话术风格时；指定了就以用户为准 | 五条可上手的写法、类比怎么给、什么时候要展开讲、容易出戏的表达、想更严格时的去处 |
-| `references/tutorial-structure.md` | 排目录与写作时 | 只要产出的是多章教程；单篇短文只参考命名与章末规范 | 章节组织原则、参考菜单、**内容深度基线（六要素）**、章末指引规范、三级目录与命名、**参考资源章的视频规范（国内外各 ≥ 2 条）**、`_meta.yaml` 目录树规范 |
-| `references/formatting.md` | 排版拿不准时 | 项目已有排版约定时以项目为准 | 标题与分割线、五种引用块（含常见场景/易错点）、代码块、表格、输出标注、配图提示词 |
-| `references/project-case.md` | 写实战章节时 | 只在产出包含端到端项目案例时读 | 六小节结构、中文资源范围、链接验证要求 |
-| `references/code-examples.md` | 抽配套示例时 | 只在要落配套脚本时读；项目另有示例目录约定的遵循项目 | 示例库目录与命名、脚本骨架、高亮/下划线标记、LLM 主题复用 utils、运行验证 |
+| `references/core-narrative-style.md` | 动笔前整场读一次，找语感 | 用户没有指定别的话术风格时；指定了就以用户为准 | 五条可上手的写法、类比怎么给、什么时候要展开讲、容易出戏的表达、想更严格时的去处 |
+| `references/core-tutorial-structure.md` | 排目录与写作时 | 只要产出的是多章教程；单篇短文只参考命名与章末规范 | 章节组织原则、参考菜单、**内容深度基线（六要素）**、章末指引规范、三级目录与命名、**参考资源章的视频规范（国内外各 ≥ 2 条）**、`_meta.yaml` 目录树规范 |
+| `references/feature-formatting.md` | 排版拿不准时 | 项目已有排版约定时以项目为准 | 标题与分割线、五种引用块（含常见场景/易错点）、代码块、表格、输出标注、配图提示词 |
+| `references/feature-project-case.md` | 写实战章节时 | 只在产出包含端到端项目案例时读 | 六小节结构、中文资源范围、链接验证要求 |
+| `references/feature-code-examples.md` | 抽配套示例时 | 只在要落配套脚本时读；项目另有示例目录约定的遵循项目 | 示例库目录与命名、脚本骨架、高亮/下划线标记、LLM 主题复用 utils、运行验证 |
 | `references/best-practices-executable-commands.md` | 动笔前定环境基线，写作与交付前自检 | 只要教程含可执行命令就必须读 | 环境基线的四个维度；命令的完整性、环境、位置、实例一致性、真实性、前置条件、**长命令逐项释义** |
 
 ## 四、输出格式
 
 以下是**默认形态**，用户指定了目录、文件名、输出格式或落位路径时以用户为准。
 
-- 三级目录：技术名目录 → 学习阶段子目录 → 章节文件，命名 `<序号>-<中文标题>.md`；完整示例见 `tutorial-structure.md` 第五节。
+- 三级目录：技术名目录 → 学习阶段子目录 → 章节文件，命名 `<序号>-<中文标题>.md`；完整示例见 `core-tutorial-structure.md` 第五节。
 - 正文从一级标题开始，**不要加「参考来源」引用行**，官方资源统一放最后一章。
-- 教程根目录补 `README.md` 与 `_meta.yaml` 目录树清单（UUID 约定见 `tutorial-structure.md` 第五节第 4 小节）；配套示例落在 `~/Desktop/engineering_examples/<主题>/`，正文对应小节末尾标注脚本路径。
+- 教程根目录补 `README.md` 与 `_meta.yaml` 目录树清单（UUID 约定见 `core-tutorial-structure.md` 第五节第 4 小节）；配套示例落在 `~/Desktop/engineering_examples/<主题>/`，正文对应小节末尾标注脚本路径。
 - 单文件教程：去掉三级目录与 `_meta.yaml`，其余（章节层级、章末过渡、代码规范）照常适用。
 
 ## 五、示例对话
@@ -171,9 +171,9 @@ python3 scripts/check_tutorial.py <教程目录>
 
 0. **意图解析**：用户只给了技术名 + 风格要求，没提篇幅、深度、范围 → 全部旋钮走**默认完整版**。
 1. 搜一次版本与安装方式，再搜一次官方 Quickstart 作为实战素材。
-2. 读 `tutorial-structure.md`，列 Milvus 知识点清单、对照查漏后排章节目录，按完整版六要素直接开写。
-3. 一口气写完全部章节：每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透；常见/高频项给 2~3 个变体示例，用 `> 学习重点 ⭐` 显式标注；易错点单独成块；语气照 `narrative-style.md`、排版照 `formatting.md`、实战章节照 `project-case.md`；每章末尾给「下一站建议」，每 2~3 章一处配图建议，Python 示例用 uv + Google docstring。
-4. 挑 2~5 个重点示例（如 Collection 建表、向量插入与检索、分区键对比实验）照 `code-examples.md` 抽成脚本落 `~/Desktop/engineering_examples/milvus/`，计算值下划线、关键结论高亮，逐个跑通后回正文标注路径。
+2. 读 `core-tutorial-structure.md`，列 Milvus 知识点清单、对照查漏后排章节目录，按完整版六要素直接开写。
+3. 一口气写完全部章节：每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透；常见/高频项给 2~3 个变体示例，用 `> 学习重点 ⭐` 显式标注；易错点单独成块；语气照 `core-narrative-style.md`、排版照 `feature-formatting.md`、实战章节照 `feature-project-case.md`；每章末尾给「下一站建议」，每 2~3 章一处配图建议，Python 示例用 uv + Google docstring。
+4. 挑 2~5 个重点示例（如 Collection 建表、向量插入与检索、分区键对比实验）照 `feature-code-examples.md` 抽成脚本落 `~/Desktop/engineering_examples/milvus/`，计算值下划线、关键结论高亮，逐个跑通后回正文标注路径。
 5. 跑 `check_tutorial.py` 把 ERROR 清零、扫一眼 WARN（特别是「学习重点/注意」覆盖度），补 `README.md` 与 `_meta.yaml`，交付。
 
 ### 示例 2：精简快速版（用户有明确的调节要求）
@@ -190,7 +190,7 @@ python3 scripts/check_tutorial.py <教程目录>
    → 语气：类比密度拉满（纯后端，把 FastAPI 的路由机制类比成 Flask 的 decorator 注册）
    → 重点突出：精简版，只在 Pydantic 模型、依赖注入这两个核心章标注
 1. 搜一次 FastAPI 最新稳定版号与 pip 安装方式。
-2. 读 `tutorial-structure.md`，列 FastAPI 必备知识点清单、砍掉进阶项后排目录，直接开写。
+2. 读 `core-tutorial-structure.md`，列 FastAPI 必备知识点清单、砍掉进阶项后排目录，直接开写。
 3. 一口气写完（约 7~8 章）：每个知识点按「是什么/怎么用/小结」三要素；每知识点 1 个核心示例；类比和后端熟悉的 Flask 对比讲；Hello World 章给 GET/POST/路径参数三个变体；Python 示例用 uv + Google docstring；每章末尾给「下一站建议」，配图建议降为每 4 章一处。
 4. **跳过**（用户说"不用脚本"）。
 5. 跑 `check_tutorial.py` 把 ERROR 清零，WARN 里「学习重点覆盖度」只看核心概念那两章是否覆盖，其余 WARN 扫一眼即可；补 `README.md` 与 `_meta.yaml`，交付。

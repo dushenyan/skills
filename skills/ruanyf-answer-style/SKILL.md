@@ -1,12 +1,18 @@
 ---
-name: ruanyifeng-answer-style
+name: ruanyf-answer-style
 description: "用阮一峰写技术文章的风格为题目生成备考答案文档：通俗易懂、术语先落地、短句白话、按需控制篇幅、排版遵循中文规范。当用户要求「用阮一峰风格写答案」「通俗一点写这份答案」「外行也能看懂的答案」时触发。"
+metadata:
+  author: Shenyan Du
+  version: "2026.11.16"
+  source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
 # 阮一峰风格答案写作
 
 为面试者备考写答案文档：既要准确无误，又要让读者读完后能对着题目开口讲出来。
 不套用固定章节骨架，只约定行文顺序与排版规范。
+
+> 排版硬性要求与 `ruanyf-document-style-guide` 技能的规则同源（本文件是「答案文档」场景的速查版）；维护时两处同步改，细节冲突以该技能为准。
 
 ## 写作风格（阮一峰风格）
 

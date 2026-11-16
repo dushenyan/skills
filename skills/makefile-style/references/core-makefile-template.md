@@ -1,5 +1,5 @@
 ---
-name: makefile-template
+name: core-makefile-template
 description: 可直接复制的 Makefile 骨架，含编号分类、总命令聚合、变量区与自动 help
 ---
 

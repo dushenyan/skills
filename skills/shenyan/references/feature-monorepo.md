@@ -1,5 +1,5 @@
 ---
-name: monorepo
+name: feature-monorepo
 description: 使用 pnpm 工作区、集中式别名和 Turborepo 设置 monorepo。在创建或管理多包仓库时使用。
 ---
 

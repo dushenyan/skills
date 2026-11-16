@@ -1,9 +1,9 @@
 ---
 name: inspect-resume
-description: 以资深技术面试官视角审查简历并做求职全链路诊断：简历体检（淘汰红线、6 秒初筛、分层排查）、目标赛道锚定、投放策略系统、冷邮件外联、带评分量表的模拟面试、求职全案复盘。适用于需要检查或优化简历、提高技术岗求职成功率、准备面试的用户。边界：简历要点深加工与 STAR 改写交给 project-highlights-extractor，本技能只管审查、诊断、策略与面试判定。
+description: 以资深技术面试官视角审查简历并做求职全链路诊断：简历体检（淘汰红线、6 秒初筛、分层排查）、目标赛道锚定、投放策略系统、冷邮件外联、带评分量表的模拟面试、求职全案复盘。适用于需要检查或优化简历、提高技术岗求职成功率、准备面试的用户。边界：简历要点深加工与 STAR 改写交给 project-highlights-extractor；连续多轮深度模拟面试与理想回答范例交给 interview-simulator，本技能的模拟面试工具只做求职诊断链路内的评分摸底。
 metadata:
   author: Shenyan Du
-  version: "2026.11.9"
+  version: "2026.11.16"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 

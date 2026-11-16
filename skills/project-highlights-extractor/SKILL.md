@@ -3,7 +3,7 @@ name: project-highlights-extractor
 description: 分析用户提供的项目复盘、总结、周报、设计文档或聊天记录等素材，全面萃取项目背景、职责分工、核心任务、技术栈、问题解法、量化成果与经验，并围绕项目的真实方向做「可控包装」——补全主流技术、显性化术语、合理化量级，结构化为可直接用于简历的要点。当用户要求萃取项目要点、提炼项目经历、项目文档转简历素材、包装简历、补强项目经历或素材很少却要写出亮点时使用。
 metadata:
   author: Shenyan Du
-  version: "2026.9.19"
+  version: "2026.11.16"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -67,7 +67,7 @@ metadata:
 
 ### 第 4 步：可控包装（三种手法，风险递增）
 
-详细规则、红线清单、自洽检查与主流技术对照见 [references/packaging-rules.md](references/packaging-rules.md)，动手补写前必读。
+详细规则、红线清单、自洽检查与主流技术对照见 [references/core-packaging-rules.md](references/core-packaging-rules.md)，动手补写前必读。
 
 | 手法 | 做法 | 风险 |
 |------|------|------|
@@ -84,7 +84,7 @@ metadata:
 - **动词开头、省略主语**；禁止以「负责了……」开头——它只表达态度，不表达产出。
 - **贡献程度用五档**：主导 / 独立完成 / 推动 / 参与 / 协助。原文分不清本人作用的团队成果，写「参与」；确有个人动作支撑的，可选更强的动词。
 - **技术名词保留原文写法**，不擅自把 MySQL 升级成「精通数据库优化」；但包装档位里补的技术要用行业标准名（写 Elasticsearch 而非「搜索引擎」）。
-- 选词（动作动词）、量化六维、STAR 结构与反模式见 [references/resume-standards.md](references/resume-standards.md)。
+- 选词（动作动词）、量化六维、STAR 结构与反模式见 [references/core-resume-standards.md](references/core-resume-standards.md)。
 - 若存在目标 JD：要点排序与详略向 JD 关键词靠拢，并在报告末尾说明「按某岗位 JD 做了排序与技术关键词适配」；红线类事实不动。
 
 ### 第 6 步：输出前回扫（强制执行）
