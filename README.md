@@ -90,6 +90,7 @@ pnpx skills add dushenyan/skills --skill='*' -g
 | [inspect-resume](skills/inspect-resume) | 7 个 AI 驱动的求职诊断工具，从简历审查到面试通关 |
 | [interview-simulator](skills/interview-simulator) | 连续多轮深度模拟面试：基于简历针对性提问，给三段式结构化反馈与理想回答范例 |
 | [makefile-style](skills/makefile-style) | Makefile 组织规范：编号章节分类、每个分类收敛出总命令、统一排版与自动 help |
+| [skill-polisher](skills/skill-polisher) | 技能文件体检与打磨：六维度诊断报告、description 三要素与字数区间、技能间引用网络与风格锚点词保护 |
 | [ruanyf-answer-style](skills/ruanyf-answer-style) | 用阮一峰风格为题目写备考答案：术语先落地、短句白话、按需控制篇幅 |
 | [ruanyf-document-style-guide](skills/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
 | [ruanyf-paper-explainer](skills/ruanyf-paper-explainer) | 把论文或技术长文改写成阮一峰风格的中文解读文章 |
