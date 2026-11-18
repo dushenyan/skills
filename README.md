@@ -94,7 +94,7 @@ pnpx skills add dushenyan/skills --skill='*' -g
 | [ruanyf-answer-style](skills/ruanyf-answer-style) | 用阮一峰风格为题目写备考答案：术语先落地、短句白话、按需控制篇幅 |
 | [ruanyf-document-style-guide](skills/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
 | [ruanyf-paper-explainer](skills/ruanyf-paper-explainer) | 把论文或技术长文变成中文可读材料：深度解读、精读笔记、摘要卡片、汇报稿、综述，默认阮一峰风格且可整体覆盖 |
-| [tech-tutorial](skills/tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，先列知识点清单确保覆盖齐全，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，重点示例同步抽成可运行脚本落到 engineering_examples 示例库，配套可运行项目案例 |
+| [tech-tutorial](skills/tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，先列知识点清单确保覆盖齐全，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，按需配套可运行示例脚本与项目案例（先判必要性，不默认产出） |
 | [shenyan](skills/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
 | [socratic](skills/socratic) | 苏格拉底式思考伙伴：不直接给答案，通过层层追问引导用户澄清决策、检验理解、打磨论证 |
 

@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-"""校验生成的教程是否满足协作必需的基础格式（宽松版）。
+"""校验生成的教程是否满足协作必需的基础格式（纯提示版）。
 
 用法：
     python3 check_tutorial.py <教程目录或单个 .md 文件>
 
-只检查影响协作与阅读的机械项：
+只检查影响协作与阅读的机械项，全部为提示、不阻断交付：
 
-1. 文件命名：`<序号>-<中文标题>.md`，序号连续、不重复（ERROR）。
-2. 代码块：围栏闭合（ERROR）；语言标注缺失只提醒（WARN）。
-3. 章末「下一站建议」：除最后一章外建议都有（WARN，不阻断）。
-4. 重点标注覆盖度：每章建议出现 `> 学习重点 ⭐` 与 `> 注意`（WARN，不阻断）。
-5. `_meta.yaml` 目录树清单：建议存在，且节点与实际文件/目录一致、UUID 不重复（WARN，不阻断）。
-6. 命令占位符：`bash` / `sh` 代码块里出现独立 `...` 或 `xxx` 时提醒（WARN，不阻断）。
+1. 文件命名：`<序号>-<中文标题>.md`，序号连续、不重复。
+2. 代码块：围栏闭合、语言标注。
+3. 章末「下一站建议」：除最后一章外建议都有。
+4. 重点标注覆盖度：每章建议出现 `> 学习重点 ⭐` 与 `> 注意`。
+5. `_meta.yaml` 目录树清单：建议存在，且节点与实际文件/目录一致、UUID 不重复。
+6. 命令占位符：`bash` / `sh` 代码块里出现独立 `...` 或 `xxx` 时提醒。
+7. 视频反哺痕迹：参考资源章含视频但正文找不到映射或实操小节时提醒。
 
 标点、字间距、句长、语气、分割线、配图覆盖等写作风格一律不查：
 这些交给写作时的判断，不在校验范围内。
 
-退出码：有 ERROR 时为 1，否则为 0。
+退出码恒为 0；脚本只提示，是否修改由作者判断。
 """
 
 from __future__ import annotations
@@ -37,6 +38,13 @@ PLACEHOLDER_ELLIPSIS_RE = re.compile(r"(?:^|\s)\.\.\.(?:\s|$)")
 PLACEHOLDER_XXX_RE = re.compile(r"(?:^|\s)xxx(?:\s|$)", re.IGNORECASE)
 # _meta.yaml 节点：- name: xxx（顶层 name: xxx 不带列表符，不匹配）
 META_NAME_RE = re.compile(r"^\s*-\s+name:\s*(.+?)\s*$")
+# 视频反哺的可机械识别痕迹；命中任意一个就认为正文有落点，具体内容仍需人工判断
+VIDEO_MAPPING_HINTS = (
+    "视频 → 教程任务映射",
+    "视频里在做什么",
+    "按视频做一次",
+    "汲取视频",
+)
 UUID_RE = re.compile(
     r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 )
@@ -44,11 +52,7 @@ UUID_RE = re.compile(
 
 class Report:
     def __init__(self) -> None:
-        self.errors: list[str] = []
         self.warnings: list[str] = []
-
-    def error(self, where: str, msg: str) -> None:
-        self.errors.append(f"{where}: {msg}")
 
     def warn(self, where: str, msg: str) -> None:
         self.warnings.append(f"{where}: {msg}")
@@ -118,7 +122,7 @@ def scan_file(path: Path, report: Report) -> dict:
             stats["has_caution"] = True
 
     if in_code:
-        report.error(rel, f"第 {fence_open_line} 行：代码块未闭合")
+        report.warn(rel, f"第 {fence_open_line} 行：代码块未闭合")
 
     return stats
 
@@ -132,11 +136,11 @@ def check_names(paths: list[Path], report: Report) -> None:
             continue
         m = re.match(r"^(\d+)-(.+)\.md$", p.name)
         if not m:
-            report.error(str(p), "文件名不符合 `<序号>-<中文标题>.md` 格式")
+            report.warn(str(p), "文件名不符合 `<序号>-<中文标题>.md` 格式")
             continue
         title = m.group(2)
         if not CJK_RE.search(title):
-            report.error(str(p), f"文件名缺少中文标题：「{title}」")
+            report.warn(str(p), f"文件名缺少中文标题：「{title}」")
         numbered.append((int(m.group(1)), p))
 
     if not numbered:
@@ -146,14 +150,14 @@ def check_names(paths: list[Path], report: Report) -> None:
     seen: dict[int, Path] = {}
     for num, p in numbered:
         if num in seen:
-            report.error(str(p), f"序号 {num} 与 {seen[num]} 重复")
+            report.warn(str(p), f"序号 {num} 与 {seen[num]} 重复")
         seen[num] = p
 
     nums = sorted(seen)
     expected = list(range(1, len(nums) + 1))
     if nums != expected:
         missing = sorted(set(expected) - set(nums))
-        report.error(
+        report.warn(
             "章节目录",
             f"序号不连续，期望 1~{len(nums)}，实际 {nums}"
             + (f"，缺失 {missing}" if missing else ""),
@@ -184,6 +188,33 @@ def check_highlights(paths: list[Path], flags: dict, report: Report) -> None:
             report.warn(str(p), "未出现 `> 学习重点 ⭐`：核心概念建议显式标注一下")
         if not f["has_caution"]:
             report.warn(str(p), "未出现 `> 注意` 或 `> **踩坑提醒**`：建议补一个易错点")
+
+
+def check_video_enrichment(paths: list[Path], report: Report) -> None:
+    """提醒视频反哺是否有可机械识别的落点。
+
+    这里只做文本痕迹检查并给 WARN。视频内容是否真正被汲取仍需人工判断，
+    机械检查只负责拦住「参考资源章列了视频、正文却找不到映射或实操小节」。
+    """
+    chapters = chapter_files(paths)
+    if not chapters:
+        return
+
+    def read(path: Path) -> str:
+        # 统一读取文本，避免每处重复编码参数
+        return path.read_text(encoding="utf-8")
+
+    reference_chapters = [p for p in chapters if "参考" in p.name or "资源" in p.name]
+    if not reference_chapters or not any("视频" in read(p) for p in reference_chapters):
+        return
+
+    if any(any(hint in read(p) for hint in VIDEO_MAPPING_HINTS) for p in chapters):
+        return
+
+    report.warn(
+        str(reference_chapters[0]),
+        "参考资源章含视频，但正文未找到视频映射或反哺小节；确认已把视频实操写进对应章节",
+    )
 
 
 def check_meta_yaml(target: Path, report: Report) -> None:
@@ -226,7 +257,7 @@ def check_meta_yaml(target: Path, report: Report) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="校验教程目录的协作格式（宽松版）")
+    parser = argparse.ArgumentParser(description="校验教程目录的协作格式（纯提示版）")
     parser.add_argument("target", help="教程目录或单个 .md 文件")
     args = parser.parse_args()
 
@@ -248,28 +279,23 @@ def main() -> int:
     check_names(paths, report)
     check_next_stop(paths, flags, report)
     check_highlights(paths, flags, report)
+    check_video_enrichment(paths, report)
     if target.is_dir():
         check_meta_yaml(target, report)
 
     shown = [p for p in paths if p.name != "README.md"]
     print(f"检查文件：{len(paths)} 个（其中章节文件 {len(shown)} 个）")
-    print(f"ERROR {len(report.errors)} 项，WARN {len(report.warnings)} 项\n")
+    print(f"提示 {len(report.warnings)} 项\n")
 
-    if report.errors:
-        print("== ERROR ==")
-        for msg in report.errors:
-            print(f"  ✗ {msg}")
-        print()
     if report.warnings:
-        print("== WARN ==")
+        print("== 提示 ==")
         for msg in report.warnings:
             print(f"  ! {msg}")
         print()
-
-    if not report.errors and not report.warnings:
+    else:
         print("协作格式检查全部通过。")
 
-    return 1 if report.errors else 0
+    return 0
 
 
 if __name__ == "__main__":
