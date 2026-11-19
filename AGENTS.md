@@ -16,8 +16,10 @@
 ├── Makefile                  # 常用命令入口（make help）
 ├── README.md                 # 面向使用者的技能清单与安装说明
 ├── scripts/
-│   └── install.ts            # 把 skills/ 安装到本地各 AI 编辑器的全局技能目录
-└── skills/                   # 技能集合，目录名即技能名
+│   └── install.ts            # 把 own/ 与 external/ 安装到本地各 AI 编辑器的全局技能目录
+├── own/                      # 自己维护的技能集合，目录名即技能名
+│   └── {skill}/
+└── external/                 # 外部引入的技能，原样保留上游文件
     └── {skill}/
         ├── SKILL.md          # 必需：索引 + 工作流
         ├── GENERATION.md     # 来源追踪元数据
@@ -26,7 +28,7 @@
         └── scripts/          # 技能自带的可执行脚本（可选）
 ```
 
-没有额外的登记表或清单文件：**`skills/` 下的目录就是唯一事实来源**。`scripts/install.ts` 扫描目录自动发现技能（目录需含 `SKILL.md`），`AGENTS.md` 与 `README.md` 中的清单需手工保持同步。
+没有额外的登记表或清单文件：**`own/` 与 `external/` 下的目录就是唯一事实来源**。`scripts/install.ts` 扫描这两个目录自动发现技能（目录需含 `SKILL.md`），安装时统一平铺到编辑器的 `skills/`，两处技能不得重名。`AGENTS.md` 与 `README.md` 中的清单需手工保持同步。
 
 ## 技能规范
 

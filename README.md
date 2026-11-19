@@ -9,7 +9,7 @@
 
 ### 一键安装到本地编辑器
 
-克隆本仓库后，一条命令即可把 `skills/` 下的技能补充到本地各 AI 编辑器 / CLI 的全局技能目录（自动检测 Claude Code、Qoder、Codex、Gemini CLI、Cursor、Windsurf、Cline、OpenCode、CodeBuddy、Trae、TraeWork、WorkBuddy 等 20+ 客户端）：
+克隆本仓库后，一条命令即可把 `own/`（自维护）与 `external/`（外部引入）下的技能补充到本地各 AI 编辑器 / CLI 的全局技能目录（自动检测 Claude Code、Qoder、Codex、Gemini CLI、Cursor、Windsurf、Cline、OpenCode、CodeBuddy、Trae、TraeWork、WorkBuddy 等 20+ 客户端）：
 
 ```bash
 pnpm install
@@ -80,23 +80,27 @@ pnpx skills add dushenyan/skills --skill='*' -g
 
 | 技能 | 描述 |
 |-------|-------------|
-| [script-cli](skills/script-cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
-| [clarify](skills/clarify) | 模糊需求澄清器：一句话式笼统需求先两阶段问清，输出问题重述卡片，确认后直接开工 |
-| [article-readability-rewriter](skills/article-readability-rewriter) | 诊断并改写不好读的文章：先判断吸引力来源，再按顺序、形态、密度、语气四类杠杆逐条改写 |
-| [project-highlights-extractor](skills/project-highlights-extractor) | 项目素材萃取 + 可控包装：八维提炼事实，再沿项目真实方向补主流技术、显性化术语、合理化量级，输出简历要点与面试答辩清单 |
-| [python-project-spec](skills/python-project-spec) | Python 项目规范脚手架：uv 依赖、Makefile、apps/common/tests 目录、docs 模板、Scalar API 文档 |
-| [image-prompt-designer](skills/image-prompt-designer) | 通用图片生成方案：先判表达型还是信息型，再按可裁剪骨架写提示词——摄影、插画、产品图、封面与信息图、架构图、流程图都走同一套判断，生成后分层校验 |
-| [interactive-concept-visual](skills/interactive-concept-visual) | 一页单文件交互式概念讲解页：版式按概念本身的难点选，读者能亲手操作、看见概念如何运作 |
-| [inspect-resume](skills/inspect-resume) | 7 个 AI 驱动的求职诊断工具，从简历审查到面试通关 |
-| [interview-simulator](skills/interview-simulator) | 连续多轮深度模拟面试：基于简历针对性提问，给三段式结构化反馈与理想回答范例 |
-| [makefile-style](skills/makefile-style) | Makefile 组织规范：编号章节分类、每个分类收敛出总命令、统一排版与自动 help |
-| [skill-polisher](skills/skill-polisher) | 技能文件体检与打磨：六维度诊断报告、description 三要素与字数区间、技能间引用网络与风格锚点词保护 |
-| [ruanyf-answer-style](skills/ruanyf-answer-style) | 用阮一峰风格为题目写备考答案：术语先落地、短句白话、按需控制篇幅 |
-| [ruanyf-document-style-guide](skills/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
-| [ruanyf-paper-explainer](skills/ruanyf-paper-explainer) | 把论文或技术长文变成中文可读材料：深度解读、精读笔记、摘要卡片、汇报稿、综述，默认阮一峰风格且可整体覆盖 |
-| [tech-tutorial](skills/tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，先列知识点清单确保覆盖齐全，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，按需配套可运行示例脚本与项目案例（先判必要性，不默认产出） |
-| [shenyan](skills/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
-| [socratic](skills/socratic) | 苏格拉底式思考伙伴：不直接给答案，通过层层追问引导用户澄清决策、检验理解、打磨论证 |
+| [skill-creator](external/skill-creator) | 从零创建或更新 Agent Skill：判定写/装与项目/全局范围，按规范生成 SKILL.md 并校验 |
+| [script-cli](own/script-cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
+| [picgo-upload](external/picgo-upload) | 用 PicGo 把本地图片或文件传到图床拿回公开链接：优先复用已开着的 PicGo 客户端，其次走 CLI，最后才推荐 PicGo Cloud |
+| [clarify](own/clarify) | 模糊需求澄清器：一句话式笼统需求先两阶段问清，输出问题重述卡片，确认后直接开工 |
+| [article-readability-rewriter](own/article-readability-rewriter) | 诊断并改写不好读的文章：先判断吸引力来源，再按顺序、形态、密度、语气四类杠杆逐条改写 |
+| [arrange-docs](own/arrange-docs) | 把零散收集的文档初稿规整成正式稿件：删除对话残留与重复内容、逐张看图图文对应配注、按阮一峰规范润色并去 AI 味，排版与去味复用现有技能不自造 |
+| [project-highlights-extractor](own/project-highlights-extractor) | 项目素材萃取 + 可控包装：八维提炼事实，再沿项目真实方向补主流技术、显性化术语、合理化量级，输出简历要点与面试答辩清单 |
+| [python-project-spec](own/python-project-spec) | Python 项目规范脚手架：uv 依赖、Makefile、apps/common/tests 目录、docs 模板、Scalar API 文档 |
+| [humanizer-zh](external/humanizer-zh) | 中文文本润色：清理空话、重复与模板化表达，保留事实、确定程度和作者声音，31 个检查点按 A–F 分类 |
+| [image-prompt-designer](own/image-prompt-designer) | 通用图片生成方案：先判表达型还是信息型，再按可裁剪骨架写提示词——摄影、插画、产品图、封面与信息图、架构图、流程图都走同一套判断，生成后分层校验 |
+| [interactive-concept-visual](own/interactive-concept-visual) | 一页单文件交互式概念讲解页：版式按概念本身的难点选，读者能亲手操作、看见概念如何运作 |
+| [inspect-resume](own/inspect-resume) | 7 个 AI 驱动的求职诊断工具，从简历审查到面试通关 |
+| [interview-simulator](own/interview-simulator) | 连续多轮深度模拟面试：基于简历针对性提问，给三段式结构化反馈与理想回答范例 |
+| [makefile-style](own/makefile-style) | Makefile 组织规范：编号章节分类、每个分类收敛出总命令、统一排版与自动 help |
+| [skill-polisher](own/skill-polisher) | 技能文件体检与打磨：六维度诊断报告、description 三要素与字数区间、技能间引用网络与风格锚点词保护 |
+| [ruanyf-answer-style](own/ruanyf-answer-style) | 用阮一峰风格为题目写备考答案：术语先落地、短句白话、按需控制篇幅 |
+| [ruanyf-document-style-guide](own/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
+| [ruanyf-paper-explainer](own/ruanyf-paper-explainer) | 把论文或技术长文变成中文可读材料：深度解读、精读笔记、摘要卡片、汇报稿、综述，默认阮一峰风格且可整体覆盖 |
+| [tech-tutorial](own/tech-tutorial) | 生成通用、系统、内容充实的中文技术教程：结构对齐菜鸟教程、语气贴近阮一峰，先列知识点清单确保覆盖齐全，每个知识点按「是什么/为什么/怎么用/常见场景/坑/小结」六要素讲透，重点内容显式标注，按需配套可运行示例脚本与项目案例（先判必要性，不默认产出） |
+| [shenyan](own/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
+| [socratic](own/socratic) | 苏格拉底式思考伙伴：不直接给答案，通过层层追问引导用户澄清决策、检验理解、打磨论证 |
 
 ## 常见问题
 
@@ -118,7 +122,7 @@ fork 这个项目来创建你自己的定制技能集合。
 
 1. fork 或克隆这个存储库
 2. 安装依赖：`make install`（或 `pnpm install`）
-3. 在 `skills/` 下按 [Agent Skills](https://agentskills.io/home) 规范新增技能：每个技能一个目录，并包含 `SKILL.md`
+3. 在 `own/`（自维护）或 `external/`（外部引入）下按 [Agent Skills](https://agentskills.io/home) 规范新增技能：每个技能一个目录，并包含 `SKILL.md`
 4. 运行 `make skills` 把技能安装到本地编辑器验证效果
 
 请参阅 [AGENTS.md](AGENTS.md) 了解详细的编写指南。

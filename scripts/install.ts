@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * 一键把本仓库 `skills/` 下的技能安装到本地 AI 编辑器的全局技能目录。
+ * 一键把本仓库 `own/` 与 `external/` 下的技能安装到本地 AI 编辑器的全局技能目录。
  *
  * 用法：
  *   pnpm skills                            全量对齐：所有技能装到所有已检测到的编辑器（软链接）
@@ -13,6 +13,8 @@
  * 说明：
  * - 编辑器通过其配置目录（如 `~/.claude`）是否存在来自动检测。
  * - 默认使用软链接，仓库里的技能改动会即时生效；`--copy` 则复制一份。
+ * - 仓库里 own/（自维护）与 external/（外部引入）并列，安装时统一平铺到编辑器的 skills/ 目录；
+ *   技能目录名即安装名，两处不得重名，否则会互相覆盖。
  * - 不带 `--skill` / `--target` 时执行全量对齐：仓库里的每个技能都会装到每个已检测到的
  *   编辑器，编辑器里指向本仓库但已从仓库删除的残留会被清理，保证各编辑器的技能集合一致。
  * - 只会操作本仓库装出去的技能：指向仓库的软链接、内容一致的副本。编辑器里的同名技能
@@ -26,7 +28,12 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const skillsRoot = join(repoRoot, 'skills')
+// own/ 存自维护技能，external/ 存外部引入技能。安装时两者平铺到同一个 skills/ 目录，
+// 因此必须分开记录源路径，安装目标仍只用技能名。
+const skillRoots = [join(repoRoot, 'own'), join(repoRoot, 'external')]
+// 目录重组前的旧根目录。仅用于识别「已装出去的软链接属于本仓库」，让全量对齐能就地更新。
+// 不作为扫描源，等所有编辑器都跑过一次全量对齐后可移除。
+const legacySkillRoot = join(repoRoot, 'skills')
 const home = homedir()
 
 interface Editor {
@@ -165,13 +172,13 @@ function isLinkedTo(dest: string, target: string): boolean {
   }
 }
 
-/** 是否是安装脚本留下的软链接（指向本仓库 skills/ 下的某个目录）。 */
+/** 是否是安装脚本留下的软链接（指向本仓库 own/ 或 external/ 下的某个目录）。 */
 function pointsIntoRepo(dest: string): boolean {
   try {
     if (!lstatSync(dest).isSymbolicLink())
       return false
     const link = resolve(dirname(dest), readlinkSync(dest))
-    return link === skillsRoot || link.startsWith(`${skillsRoot}${sep}`)
+    return [...skillRoots, legacySkillRoot].some(root => link === root || link.startsWith(`${root}${sep}`))
   }
   catch {
     return false
@@ -188,11 +195,22 @@ function isRepoCopy(dest: string, source: string): boolean {
   }
 }
 
-function listSkills(): string[] {
-  return readdirSync(skillsRoot, { withFileTypes: true })
-    .filter(entry => entry.isDirectory() && existsSync(join(skillsRoot, entry.name, 'SKILL.md')))
-    .map(entry => entry.name)
-    .sort()
+/**
+ * 汇总两个源根目录下的技能，返回「安装名 -> 源绝对路径」。
+ * 装到编辑器后只用安装名平铺，所以源路径必须在安装时逐个解析，不能假设单一根目录。
+ */
+function listSkills(): Map<string, string> {
+  const found = new Map<string, string>()
+  for (const root of skillRoots) {
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+      if (!entry.isDirectory() || !existsSync(join(root, entry.name, 'SKILL.md')))
+        continue
+      if (found.has(entry.name))
+        throw new Error(`技能重名: ${entry.name}（同时存在于多个源目录，装到编辑器会互相覆盖）`)
+      found.set(entry.name, join(root, entry.name))
+    }
+  }
+  return found
 }
 
 function pickSkills(all: string[], requested: string[]): string[] {
@@ -248,9 +266,10 @@ function removeOrphans(targetDir: string, keep: string[], dryRun: boolean): void
 }
 
 function installSkills(options: Options): void {
-  const allSkills = listSkills()
+  const skillMap = listSkills()
+  const allSkills = [...skillMap.keys()].sort()
   if (allSkills.length === 0) {
-    logError(`在 ${gray(skillsRoot)} 下没有找到任何技能（技能目录需包含 SKILL.md）`)
+    logError(`在 ${gray(skillRoots.join(' 与 '))} 下没有找到任何技能（技能目录需包含 SKILL.md）`)
     process.exit(1)
   }
 
@@ -280,7 +299,7 @@ function installSkills(options: Options): void {
 
     for (const name of skills) {
       const dest = join(targetDir, name)
-      const source = join(skillsRoot, name)
+      const source = skillMap.get(name)!
       const existed = pathExists(dest)
 
       // 只动本仓库装出去的东西：指向仓库的软链接、内容一致的副本，或显式 --force
