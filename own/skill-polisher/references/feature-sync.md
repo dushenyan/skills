@@ -1,11 +1,11 @@
 ---
 name: feature-sync
-description: 同步检查：README 清单与 skills/ 目录的一致性核对
+description: 同步检查：README 清单与 own/、external/ 目录的一致性核对
 ---
 
 # 同步检查
 
-本仓库没有登记表，`skills/` 目录是唯一事实来源，README.md 的清单靠手工同步——这正是漂移的温床。每次体检的最后一步是核对两边，修复后必须复查。
+本仓库没有登记表，`own/` 与 `external/` 目录是唯一事实来源，README.md 的清单靠手工同步——这正是漂移的温床。每次体检的最后一步是核对两边，修复后必须复查。
 
 ## 使用
 
@@ -21,7 +21,7 @@ description: 同步检查：README 清单与 skills/ 目录的一致性核对
 
 ```bash
 # 目录侧技能名清单
-ls -d skills/*/ | xargs -n1 basename | sort > /tmp/dirs.txt
+ls -d own/*/ external/*/ | xargs -n1 basename | sort > /tmp/dirs.txt
 # README 侧按清单格式提取技能名后，与目录侧 diff
 ```
 
