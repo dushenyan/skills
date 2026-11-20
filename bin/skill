@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# 终端速览技能清单。用 pnpm link --global 注册到全局后，所有参数原样透传。
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+if [[ ! -x "$repo_root/node_modules/.bin/tsx" ]]; then
+  echo '缺少依赖，请先在技能仓库执行：pnpm install' >&2
+  exit 1
+fi
+
+exec "$repo_root/node_modules/.bin/tsx" "$repo_root/scripts/list.ts" "$@"
