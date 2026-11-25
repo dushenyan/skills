@@ -3,7 +3,7 @@ name: python-project-spec
 description: Python 项目规范脚手架：统一的目录结构、uv 依赖环境、Makefile、docs 文档模板、PEP 8 命名、Google 风格 docstring 与 Scalar API 文档。创建或初始化 Python 项目、要求规范/改造既有 Python 代码结构时调用；用户提到「项目初始化/脚手架/目录结构/Makefile/uv/docs 规范/PEP 8 命名/Google 风格 docstring/Scalar API 文档」时也应使用，即使没有明确说出「规范」二字。不用于写技术教程（交 tech-tutorial），本技能只落地项目脚手架与代码规范。
 metadata:
   author: Shenyan Du
-  version: "2026.11.16"
+  version: "2026.11.25"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -13,7 +13,6 @@ metadata:
 
 本文件只承载**工作流与索引**。各主题的细节分散在 `references/` 下，按需读取，不要一次性全部加载。
 
-定稿前必须走「终检：去 AI 味」，见本文同名章节。
 
 ## 何时触发
 
@@ -55,26 +54,4 @@ metadata:
 
 ## 终检：去 AI 味（流程的最后一步）
 
-这不是可跳过的附录。定稿前先跑扫描，再逐条过人工清单，两条都过才算交付。
-
-`humanizer-zh` 在仓库里位于 `external/`，安装到编辑器后与其他技能平铺在同一 `skills/` 下，相对路径随布局变化。先定位脚本再跑，两种布局都覆盖：
-
-```bash
-SCAN=$(ls ../humanizer-zh/scripts/scan-ai-tone.mjs ../../external/humanizer-zh/scripts/scan-ai-tone.mjs 2>/dev/null | head -1)
-
-node "$SCAN" 稿件.md   # 稿件已落盘
-node "$SCAN" -         # 从标准输入读
-```
-
-扫描只负责把候选捞出来，判定标准在 `humanizer-zh/SKILL.md` 的 A–F 检查点（仓库内为 `external/humanizer-zh/SKILL.md`）。命中不等于必须改，承载实际信息的句子照原样保留。
-
-必须清掉的六处：
-
-- 空泛高频词：「赋能」「闭环」「显著提升」换成具体动作或数据
-- 强凑三段式：有几项写几项，不为节奏删项或凑项
-- 万能破折号：每处问一句「换成逗号或句号是否更清楚」
-- 句尾拔高：结论停在事实上，不追加「这标志着……」
-- 套话收尾：删掉「综上所述」「未来可期」「希望对你有帮助」
-- 客服腔与免责填充：「值得注意的是」「需要指出的是」
-
-底线是保留事实、否定、条件、归因、时间与完成状态，润色不许改变原意。
+定稿前按 `humanizer-final-check` 技能跑终检（扫描脚本定位 + 六条清单 + A–F 判定），两层都过才算交付。

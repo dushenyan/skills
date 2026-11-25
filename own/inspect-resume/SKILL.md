@@ -3,7 +3,7 @@ name: inspect-resume
 description: 以资深技术面试官视角审查简历并做求职全链路诊断：简历体检（淘汰红线、6 秒初筛、分层排查）、目标赛道锚定、投放策略系统、冷邮件外联、带评分量表的模拟面试、求职全案复盘。适用于需要检查或优化简历、提高技术岗求职成功率、准备面试的用户。边界：简历要点深加工与 STAR 改写交给 project-highlights-extractor；连续多轮深度模拟面试与理想回答范例交给 interview-simulator，本技能的模拟面试工具只做求职诊断链路内的评分摸底。
 metadata:
   author: Shenyan Du
-  version: "2026.11.16"
+  version: "2026.11.25"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -13,7 +13,6 @@ metadata:
 
 > 与 `project-highlights-extractor` 分工：那个技能负责把项目素材深加工成分档简历要点与 STAR 故事；本技能负责诊断、定位、投放策略、外联与模拟面试。需要改写具体 bullet 时交叉引用，不在此重复。
 
-定稿前必须走「终检：去 AI 味」，见本文同名章节。
 
 ## 核心参考
 
@@ -26,30 +25,8 @@ metadata:
 | 主题 | 描述 | 参考 |
 |-------|-------------|-----------|
 | 提示词模板 | 7 个内嵌面试官评判口径的技术岗模板，可直接复制 | [feature-prompt-templates](references/feature-prompt-templates.md) |
-| 最佳实践 | 使用流程、技术岗误区、与同类技能的分工 | [best-practices](references/best-practices.md) |
+| 最佳实践 | 使用流程、技术岗误区、与同类技能的分工 | [best-practices-workflow](references/best-practices-workflow.md) |
 
 ## 终检：去 AI 味（流程的最后一步）
 
-这不是可跳过的附录。定稿前先跑扫描，再逐条过人工清单，两条都过才算交付。
-
-`humanizer-zh` 在仓库里位于 `external/`，安装到编辑器后与其他技能平铺在同一 `skills/` 下，相对路径随布局变化。先定位脚本再跑，两种布局都覆盖：
-
-```bash
-SCAN=$(ls ../humanizer-zh/scripts/scan-ai-tone.mjs ../../external/humanizer-zh/scripts/scan-ai-tone.mjs 2>/dev/null | head -1)
-
-node "$SCAN" 稿件.md   # 稿件已落盘
-node "$SCAN" -         # 从标准输入读
-```
-
-扫描只负责把候选捞出来，判定标准在 `humanizer-zh/SKILL.md` 的 A–F 检查点（仓库内为 `external/humanizer-zh/SKILL.md`）。命中不等于必须改，承载实际信息的句子照原样保留。
-
-必须清掉的六处：
-
-- 空泛高频词：「赋能」「闭环」「显著提升」换成具体动作或数据
-- 强凑三段式：有几项写几项，不为节奏删项或凑项
-- 万能破折号：每处问一句「换成逗号或句号是否更清楚」
-- 句尾拔高：结论停在事实上，不追加「这标志着……」
-- 套话收尾：删掉「综上所述」「未来可期」「希望对你有帮助」
-- 客服腔与免责填充：「值得注意的是」「需要指出的是」
-
-底线是保留事实、否定、条件、归因、时间与完成状态，润色不许改变原意。
+定稿前按 `humanizer-final-check` 技能跑终检（扫描脚本定位 + 六条清单 + A–F 判定），两层都过才算交付。

@@ -3,7 +3,7 @@ name: arrange-docs
 description: 把零散收集的文档初稿规整成正式稿件——删除对话残留与重复内容、逐张查看本地图片并图文对应配注、按读者操作顺序重组章节、按阮一峰规范润色并去 AI 味。当用户说「整理这篇文档」「规整初稿」「删除无用信息」「图文对应」「把收集的资料整理成文章」「把聊天记录整理成教程」时使用。不用于从零生成教程（交给 tech-tutorial）、纯排版校对（交给 ruanyf-document-style-guide）、提升阅读兴趣的改写（交给 article-readability-rewriter）。
 metadata:
   author: Shenyan Du
-  version: "2026.11.19"
+  version: "2026.11.25"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
 
@@ -52,18 +52,7 @@ metadata:
 
 ### 5. 去 AI 味（交付前必做）
 
-这不是可跳过的附录。定稿前先跑扫描，再对照判定标准逐条过，两条都过才算交付。
-
-`humanizer-zh` 在仓库里位于 `external/`，安装到编辑器后与其他技能平铺在同一 `skills/` 下，相对路径随布局变化。先定位脚本再跑，两种布局都覆盖：
-
-```bash
-SCAN=$(ls ../humanizer-zh/scripts/scan-ai-tone.mjs ../../external/humanizer-zh/scripts/scan-ai-tone.mjs 2>/dev/null | head -1)
-
-node "$SCAN" 文档.md   # 文档已落盘
-node "$SCAN" -         # 从标准输入读
-```
-
-扫描只负责把候选捞出来，判定标准在 `humanizer-zh/SKILL.md` 的 A–F 检查点（仓库内为 `external/humanizer-zh/SKILL.md`）。命中不等于必须改，承载实际信息的句子照原样保留，但每处「保留」要在交付报告里给出理由。
+定稿前按 `humanizer-final-check` 技能跑终检（扫描脚本定位 + 六条清单 + A–F 判定），两层都过才算交付。
 
 ## 输出要求
 

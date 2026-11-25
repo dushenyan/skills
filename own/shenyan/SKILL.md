@@ -1,11 +1,22 @@
 ---
 name: shenyan
-description: 个人的 JavaScript/TypeScript 项目工具和约定。在设置新项目、配置 ESLint/Prettier 替代品、管理 monorepo、发布库或提及的偏好时使用。
+description: 个人的 JavaScript/TypeScript 项目工具与编码约定：代码组织、@antfu/eslint-config、pnpm catalogs、monorepo 别名、tsdown 发库。当用户说「按我的习惯设置新 JS/TS 项目」「配置 ESLint/Prettier 替代品」「管理 monorepo」「用 pnpm catalogs 管版本」「发布 TypeScript 库」时使用。通用技术教程与系统学习材料交给 tech-tutorial，CLI 应用开发指南交给 script-cli，本技能只落地个人 JS/TS 项目约定。
 metadata:
   author: Shenyan Du
-  version: "2026.11.16"
+  version: "2026.11.24"
   source: 手写维护，scripts located at https://github.com/dushenyan/skills
 ---
+
+# 个人 JS/TS 项目约定
+
+集中记录 Shenyan 的 JavaScript/TypeScript 项目习惯：编码实践、工具选择与包管理策略。设置新项目、配置 monorepo 或发布库时按此落地，不重复通用教程内容。
+
+## 核心参考
+
+| 主题 | 描述 | 参考 |
+|------|------|------|
+| 库开发 | tsdown 构建、纯 ESM 输出与 package.json 导出配置 | [feature-library-development](references/feature-library-development.md) |
+| Monorepo | pnpm 工作区、集中式别名与 Turborepo 编排 | [feature-monorepo](references/feature-monorepo.md) |
 
 ## 编码实践
 

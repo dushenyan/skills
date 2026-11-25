@@ -3,7 +3,7 @@ name: picgo-upload
 description: 用 PicGo 把本地图片或文件传到图床并拿回可分享链接。写文档、README、博客需要插图，或要把截图变成 Markdown 图片链接、把 PDF/zip 变成公开下载链接时使用，也适用于用户说「传图床」「上传图片」「图床」。用户指定了云盘、对象存储、CDN 等其他目标，或只是本地保存、下载文件时不要使用。
 metadata:
   author: PicGo
-  version: "1.1.0"
+  version: "1.2.1"
   source: https://github.com/PicGo/skills
 ---
 
@@ -81,6 +81,22 @@ Step 2 already told you which uploader is active (from the `picgo get uploader` 
   ```
 
 `picgo upload --format json` prints `[{imgUrl, fileName, type, size, ...}]`, the same shape the GUI script returns. Treat the upload as successful only if stdout parses as that JSON array: on some errors (e.g. an unknown `--configName`) the CLI prints the error to stdout and still exits `0`.
+
+## Avoid stale images from filename collisions
+
+Some PicGo hosts (notably the **GitHub uploader**) do not overwrite an existing file with the same name. They can still return a success JSON whose `imgUrl` points to the previously uploaded file, so a Markdown document silently shows an unrelated image. Never assume a successful upload means fresh content.
+
+Before uploading, check whether each target filename is already taken on the host:
+
+- For GitHub, read `~/Library/Application Support/picgo/data.json` (macOS) and use `picBed.github.repo`, `picBed.github.branch`, `picBed.github.path`, and `picBed.github.token` from the active configuration.
+- Call `GET https://api.github.com/repos/{repo}/contents/{path}/{fileName}` with `Authorization: Bearer <token>`. `200` means the name is taken; `404` means it is free.
+- Never print the token in tool output or logs.
+
+If any name is taken, **do not upload the original files**. Copy them to a temp directory with a unique prefix, for example `{project-slug}-{YYYYMMDD}-{original-name}`, upload those copies, and use the new URLs in the document. Leave the existing remote files untouched — another document may still reference them.
+
+Compression is part of the upload flow, not an optional detail. On this machine the PicGo GUI compresses images before uploading, so the hosted file is expected to be smaller than the local source. If the active PicGo configuration does not apply compression, pre-compress the images locally first; do not skip this step.
+
+After replacing references, download each returned `imgUrl` and verify the image is correct. Compare the visual content or the `width` / `height` reported in the upload result. **Do not rely on byte-for-byte hashes**: compression changes the bytes even when the image content is correct.
 
 ## Uploading to a specific configuration
 

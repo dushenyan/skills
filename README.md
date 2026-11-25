@@ -97,7 +97,9 @@ pnpx skills add dushenyan/skills --skill='*' -g
 
 | 技能 | 描述 |
 |-------|-------------|
+| [doc-workflow](own/doc-workflow) | 文档任务总编排：按教程目录、Markdown 文件、链接三条路线分流到对应技能，成文先看再问配图，配图看完再问上传图床 |
 | [article-readability-rewriter](own/article-readability-rewriter) | 诊断并改写不好读的文章：先判断吸引力来源，再按顺序、形态、密度、语气四类杠杆逐条改写 |
+| [article-illustrations](own/article-illustrations) | 为文章规划并生成配图：通读全文找需要画面的位置、定图型与风格基线、复用 image-prompt-designer 出图、写图注并落回文章 |
 | [arrange-docs](own/arrange-docs) | 把零散收集的文档初稿规整成正式稿件：删除对话残留与重复内容、逐张看图图文对应配注、按阮一峰规范润色并去 AI 味，排版与去味复用现有技能不自造 |
 | [ruanyf-answer-style](own/ruanyf-answer-style) | 用阮一峰风格为题目写备考答案：术语先落地、短句白话、按需控制篇幅 |
 | [ruanyf-document-style-guide](own/ruanyf-document-style-guide) | 阮一峰中文技术文档写作规范的代理化改写：排版、句式、标点、数值的硬规则速查与校对工作流 |
@@ -114,9 +116,13 @@ pnpx skills add dushenyan/skills --skill='*' -g
 | [interview-simulator](own/interview-simulator) | 连续多轮深度模拟面试：基于简历针对性提问，给三段式结构化反馈与理想回答范例 |
 | [makefile-style](own/makefile-style) | Makefile 组织规范：编号章节分类、每个分类收敛出总命令、统一排版与自动 help |
 | [python-project-spec](own/python-project-spec) | Python 项目规范脚手架：uv 依赖、Makefile、apps/common/tests 目录、docs 模板、Scalar API 文档 |
-| [shenyan](own/shenyan) | 个人的 JavaScript/TypeScript 项目工具与约定（@antfu/ni、ESLint、pnpm catalogs、monorepo 等） |
+| [shenyan](own/shenyan) | 个人的 JavaScript/TypeScript 项目工具与编码约定：代码组织、@antfu/eslint-config、pnpm catalogs、monorepo 别名、tsdown 发库 |
 | [humanizer-zh](external/humanizer-zh) | 中文文本润色：清理空话、重复与模板化表达，保留事实、确定程度和作者声音，31 个检查点按 A–F 分类 |
+| [humanizer-final-check](own/humanizer-final-check) | 中文文本交付前的去 AI 味终检：跑扫描脚本定位候选，按 humanizer-zh 的 A–F 检查点逐条判定，供各写作技能统一调用 |
 | [skill-creator](external/skill-creator) | 从零创建或更新 Agent Skill：判定写/装与项目/全局范围，按规范生成 SKILL.md 并校验 |
+| [baoyu-image-gen](external/baoyu-image-gen) | 调用多家图像 API 生成图片：文生图、参考图、比例尺寸与批量生成，是写作配图链路的出图执行层 |
+| [baoyu-article-illustrator](external/baoyu-article-illustrator) | 分析文章结构定位配图位置，按类型×风格×配色批量生成插图；与 article-illustrations 的设计规划不同，偏上游整套成稿配图执行 |
+| [baoyu-slide-deck](external/baoyu-slide-deck) | 从内容生成可发布风格的逐页图片幻灯片，支持风格维度配置并合并为 PPTX/PDF |
 | [script-cli](own/script-cli) | 现代 CLI 应用开发的最佳实践：架构、参数解析、交互式提示、日志、配置、错误处理与测试 |
 
 

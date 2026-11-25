@@ -1,5 +1,5 @@
 ---
-name: best-practices
+name: best-practices-workflow
 description: 技术岗求职诊断的使用流程、常见误区，以及与 project-highlights-extractor 的分工
 ---
 

@@ -1,15 +1,17 @@
 ---
 name: script-cli
-description: 现代 CLI 应用程序开发的完整指南：架构分层、参数解析、交互式提示、结构化日志、配置管理、错误处理与测试。在开发命令行工具、脚手架或终端应用时使用；用户提到「CLI / 命令行工具 / 终端应用 / commander / clack / 参数解析 / 交互式命令行」等时也应触发。
+description: 现代 CLI 应用程序开发的完整指南：架构分层、参数解析、交互式提示、结构化日志、配置管理、错误处理与测试。当用户说「开发命令行工具」「做个终端应用」「用 commander / clack 解析参数」「设计交互式命令行」时使用，编写脚手架或补充 CLI 项目规范时也适用。个人的 JS/TS 项目约定（@antfu/ni、pnpm catalogs、monorepo）交给 shenyan；本技能只做 CLI 应用开发实践。
 metadata:
   author: Shenyan Du
-  version: "2026.11.16"
+  version: "2026.11.25"
   source: Generated from file-wizard project, scripts located at https://github.com/dushenyan/skills
 ---
 
-> 该技能基于 file-wizard v0.1.0，生成于 2026-03-26。
+# 现代 CLI 应用开发
 
 此技能提供构建现代、用户友好的命令行界面（CLI）应用程序的完整指南，涵盖架构设计、参数解析、交互式提示、日志输出、配置管理、错误处理和测试策略等关键方面。
+
+> 该技能基于 file-wizard v0.1.0，生成于 2026-03-26。
 
 ## 核心参考
 
