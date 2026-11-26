@@ -97,6 +97,8 @@ pnpx skills add dushenyan/skills --skill='*' -g
 
 | 技能 | 描述 |
 |-------|-------------|
+| [web-research-report](own/web-research-report) | 自主互联网调研报告：拆问题、搜索抓取、来源分级、交叉验证、带证据表成文；自带纯标准库远程正文下载脚本 |
+| [report-doc-polisher](own/report-doc-polisher) | 把调研初稿、网页摘录、聊天记录合并成正式报告：事实盘点、删重复、按读者顺序重组、风格与终检 |
 | [doc-workflow](own/doc-workflow) | 文档任务总编排：按教程目录、Markdown 文件、链接三条路线分流到对应技能，成文先看再问配图，配图看完再问上传图床 |
 | [article-readability-rewriter](own/article-readability-rewriter) | 诊断并改写不好读的文章：先判断吸引力来源，再按顺序、形态、密度、语气四类杠杆逐条改写 |
 | [article-illustrations](own/article-illustrations) | 为文章规划并生成配图：通读全文找需要画面的位置、定图型与风格基线、复用 image-prompt-designer 出图、写图注并落回文章 |

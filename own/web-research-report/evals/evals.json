@@ -1,0 +1,23 @@
+{
+  "skill_name": "web-research-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用 3 次搜索调研一下 Agent Skills 的最佳实践，写一份 500 字以内的中文报告，要有出处。",
+      "expected_output": "一份中文调研报告，含执行摘要、至少 3 条带链接的结论、证据表、分歧与限制章节。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "调研一下 2026 年 MCP（Model Context Protocol）的最新进展，给一份带对比表和证据表的小报告。",
+      "expected_output": "一份中文调研报告，含最新进展、对比表、证据表、链接与时效说明。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "搜一下主流 AI 编辑器（Claude Code / Cursor / Codex）的 Skills 目录约定，整理成一份简报。",
+      "expected_output": "一份中文简报，对比三家编辑器的 Skills 目录，附来源链接与证据表。",
+      "files": []
+    }
+  ]
+}
